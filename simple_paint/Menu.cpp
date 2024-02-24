@@ -142,6 +142,7 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 25 + 3; i++)
             {
+
                 std::cout << " "; 
             }
             std::cout << "X";
@@ -150,7 +151,14 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
             {
-                std::cout << " ";
+                if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
+                {//white
+                    SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else{std::cout << " ";}
+                
             }
             std::cout << "X";
             for (int i = 0; i < 2; i++)
@@ -162,7 +170,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
             {
-                std::cout << " ";
+                if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
+                {//white
+                    SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else { std::cout << " "; }
             }
             std::cout << "X";
             for (int i = 0; i < 4; i++)
@@ -174,7 +188,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
             {
-                std::cout << " ";
+                if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
+                {//white
+                    SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else { std::cout << " "; }
             }
             std::cout << "X";
             for (int i = 0; i < 6; i++)
@@ -186,12 +206,24 @@ void createMenu()
             std::cout << "           CC     CC";
             for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
             {
-                std::cout << " ";
+                if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
+                {//white
+                    SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else { std::cout << " "; }
             }
             std::cout << "X";
             for (int i = 0; i < 8; i++)
             {
-                std::cout << " ";
+                if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
+                {//white
+                    SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else { std::cout << " "; }
             }
             std::cout << "X";
             std::cout << "\n";
@@ -199,7 +231,7 @@ void createMenu()
         }
         std::cout << "\n";
     }
-    for (int i = 0; i < MAX_WIDTH + 20; i++)
+    for (int i = 0; i < MAX_WIDTH + 27; i++)
     {
         std::cout << "|";
     }

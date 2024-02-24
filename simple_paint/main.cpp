@@ -12,7 +12,7 @@ void removeScroll()
     GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 
     // Get rid of the scrollbar by setting the screen buffer size the same as 
-    // the console window size.
+    // the console window size. 
     COORD new_screen_buffer_size;
 
     // screenBufferInfo.srWindow allows us to obtain the width and height info 
@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
 
     SetConsoleMode(hin, ENABLE_MOUSE_INPUT);// дозволяємо mouse input
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// колор ченж
-    
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// color change
+
     bool isExitPressed = false;
     while (!isExitPressed)
     {
@@ -107,10 +107,23 @@ int main(int argc, char* argv[])
                 clear();
                 createMenu();
             }
-            if (coord.Y <= 5 && coord.Y >= 2 && coord.X >= 572 && coord.X <= 577)
+            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 572 && coord.X <= 577)
             {// синій колір
                 SetConsoleTextAttribute(hConsole, 9);
             }
+            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 562 && coord.X <= 567)
+            {// зелений колір
+                SetConsoleTextAttribute(hConsole, 10);
+            }
+            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 552 && coord.X <= 557)
+            {// червоний колір
+                SetConsoleTextAttribute(hConsole, 12);
+            }
+            if (coord.Y <= 11 && coord.Y >= 8 && coord.X >= 552 && coord.X <= 557)
+            {// білий колір
+                SetConsoleTextAttribute(hConsole, 15);
+            }
+
             //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
         }
     }
