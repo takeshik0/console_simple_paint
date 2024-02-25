@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <iostream>
+#include <string>
 #include <vector>
 #include "Menu.h"
 #include "Tools.h"
@@ -17,6 +18,39 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
+void bucketAll(int y, int x, std::vector<std::vector<int>> &coordForKnowing)
+{
+    for (auto &it : coordForKnowing)
+    {
+        if (it[0] == y + 1 && it[1] == x+1)
+        {
+            return;
+        }
+    }
+    printToCoordinates(x + 1, y + 1, "0");
+    
+    printToCoordinates(x + 1, y, "0");
+
+    printToCoordinates(x, y + 1, "0");
+
+    printToCoordinates(x, y, "0");
+
+    printToCoordinates(x - 1, y - 1, "0");
+
+    printToCoordinates(x - 1, y, "0");
+
+    printToCoordinates(x, y - 1, "0");
+
+    bucketAll(x + 1, y + 1, coordForKnowing);
+    bucketAll(x + 1, y, coordForKnowing);
+    bucketAll(x, y + 1, coordForKnowing);
+    bucketAll(x, y, coordForKnowing);
+    bucketAll(x - 1, y - 1, coordForKnowing);
+    bucketAll(x - 1, y, coordForKnowing);
+    bucketAll(x, y - 1, coordForKnowing);
+
+    
+}
 
 int main(int argc, char* argv[])
 {
@@ -57,7 +91,11 @@ int main(int argc, char* argv[])
 
     bool isCirclePressed = false;
 
+    bool isFullBucketPressed = false;
+
     std::vector<std::vector<int>> coordForRectangle;
+
+    std::vector<std::vector<int>> coordForKnowing;
 
     while (!isExitPressed)
     {
@@ -205,6 +243,17 @@ int main(int argc, char* argv[])
                     isCirclePressed = true;
                 }
             }
+            if (coord.Y <= 9 && coord.Y >= 4 && coord.X >= 202 && coord.X <= 213)
+            {// заливка
+                if (isFullBucketPressed)
+                {
+                    isFullBucketPressed = false;
+                }
+                else
+                {
+                    isFullBucketPressed = true;
+                }
+            }
             if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 572 && coord.X <= 577)
             {// синій колір
                 SetConsoleTextAttribute(hConsole, 9);
@@ -251,6 +300,14 @@ int main(int argc, char* argv[])
         if (isCirclePressed)
         {
             drawCircle(coordForRectangle);
+        }
+        if (isFullBucketPressed && coord.Y >30)
+        {
+            std::vector<int> temp;
+            temp.push_back(coord.X);
+            temp.push_back(coord.Y);
+            coordForKnowing.push_back(temp);
+            bucketAll(coord.X,coord.Y, coordForKnowing);
         }
     }
 
