@@ -3,47 +3,8 @@
 #include <vector>
 #include "Menu.h"
 #include "Tools.h"
+#include "Rectangle.h"
 
-void drawRectangle(std::vector<std::vector<int>> &coordForRectangle)
-{
-    if (coordForRectangle.size() == 0)
-    {
-        return;
-    }
-    int currBottom = coordForRectangle[0][1];
-    while (currBottom != coordForRectangle[coordForRectangle.size() - 1][1])
-    {
-        printToCoordinates(currBottom, coordForRectangle[0][0] , "8");
-        currBottom++;
-    }
-    int currRight = coordForRectangle[0][0];
-    while (currRight != coordForRectangle[coordForRectangle.size() - 1][0])
-    {
-        printToCoordinates(coordForRectangle[0][1], currRight, "8");
-        currRight++;
-    }
-    int currUp = coordForRectangle[coordForRectangle.size() - 1][1];
-    while (currUp != coordForRectangle[0][1])
-    {
-        
-        currUp--;
-        printToCoordinates(currUp, coordForRectangle[coordForRectangle.size() - 1][0], "8");
-    }
-    int currLeft = coordForRectangle[coordForRectangle.size() - 1][0];
-    while (currLeft != coordForRectangle[0][0])
-    {
-        currLeft--;
-        printToCoordinates(coordForRectangle[coordForRectangle.size() - 1][1], currLeft, "8");
-
-    }
-    //int currRight = coordForRectangle[0][0];
-    //while (currRight != coordForRectangle[coordForRectangle.size() - 1][0])
-    //{
-    //    printToCoordinates(coordForRectangle[0][1], currRight, "8");
-    //    currRight++;
-    //}
-    //coordForRectangle.clear();
-}
 
 void printToCoordinates(int x, int y, const char* format, ...)
 {
@@ -93,6 +54,8 @@ int main(int argc, char* argv[])
 
     bool isQuadroPressed = false;
 
+    bool isCirclePressed = false;
+
     std::vector<std::vector<int>> coordForRectangle;
 
     while (!isExitPressed)
@@ -104,15 +67,34 @@ int main(int argc, char* argv[])
             coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
             coordForRectangle.clear();
+            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
+            {// очистити use
+                clear();
+                createMenu();
+                isExitPressed = false;
+
+                isCleanerActive = false;
+
+                isSmallSizePressed = true;
+
+                isMediumSizePressed = false;
+
+                isBigSizePressed = false;
+
+                isQuadroPressed = false;
+
+                isCirclePressed = false;
+
+            }
             //isQuadroPressed = false;
             //std:e:cout << "right - X" << coord.X << ", Y = " << coord.Y << std::endl;
-            //break;
+            //break; 
         }
         if (InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED) // ліва кнопка
         {
             coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            if (coord.Y > 30 && !isQuadroPressed)
+            if (coord.Y > 30 && !isQuadroPressed && !isCirclePressed)
             {// заборона малювати на менюшці
                 if (!isCleanerActive)
                 {
@@ -159,7 +141,14 @@ int main(int argc, char* argv[])
                 }
                 
             }
-            else if (coord.Y > 30 && isQuadroPressed)
+            else if (coord.Y > 30 && isQuadroPressed && !isCirclePressed)
+            {
+                std::vector<int> temp;
+                temp.push_back(coord.X + 1);
+                temp.push_back(coord.Y + 1);
+                coordForRectangle.push_back(temp);
+            }
+            else if (coord.Y > 30 && !isQuadroPressed && isCirclePressed)
             {
                 std::vector<int> temp;
                 temp.push_back(coord.X + 1);
@@ -184,6 +173,10 @@ int main(int argc, char* argv[])
                 isMediumSizePressed = false;
                 isBigSizePressed = true;
             }
+            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 607 && coord.X <= 617)
+            {// вихід
+                isExitPressed = true;
+            }
             if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
             {// очистити
                 clear();
@@ -200,10 +193,16 @@ int main(int argc, char* argv[])
                     isQuadroPressed = true;
                 }
             }
-            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
-            {// очистити
-                clear();
-                createMenu();
+            if (coord.Y <= 10 && coord.Y >= 5 && coord.X >= 373 && coord.X <= 385)
+            {// малювати коло
+                if (isCirclePressed)
+                {
+                    isCirclePressed = false;
+                }
+                else
+                {
+                    isCirclePressed = true;
+                }
             }
             if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 572 && coord.X <= 577)
             {// синій колір
@@ -242,7 +241,7 @@ int main(int argc, char* argv[])
 
             }
 
-            //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
+            std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
         }
         if (isQuadroPressed)
         {

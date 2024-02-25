@@ -107,7 +107,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 257) && i <= MAX_WIDTH - 251)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
@@ -156,7 +162,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 259) && i <= MAX_WIDTH - 249)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
@@ -199,7 +211,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 25 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 260) && i <= MAX_WIDTH - 248)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
@@ -214,7 +232,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 260) && i <= MAX_WIDTH - 248)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
@@ -257,7 +281,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 259) && i <= MAX_WIDTH - 249)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
@@ -299,7 +329,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                if ((i >= MAX_WIDTH - 257) && i <= MAX_WIDTH - 251)
+                {// коло
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "O";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
                 {// квадрат
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "[";
