@@ -39,6 +39,10 @@ int main(int argc, char* argv[])
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// color change
 
     bool isExitPressed = false;
+    bool isCleanerActive = false;
+    bool isSmallSizePressed = true;
+    bool isMediumSizePressed = false;
+    bool isBigSizePressed = false;
     while (!isExitPressed)
     {
         ReadConsoleInput(hin, &InputRecord, 1, &Events); // зчитування 
@@ -47,7 +51,7 @@ int main(int argc, char* argv[])
         {
             coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            //std::cout << "right - X" << coord.X << ", Y = " << coord.Y << std::endl;
+            //std:e:cout << "right - X" << coord.X << ", Y = " << coord.Y << std::endl;
             break;
         }
         if (InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED) // ліва кнопка
@@ -56,7 +60,68 @@ int main(int argc, char* argv[])
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
             if (coord.Y > 30)
             {// заборона малювати на менюшці
-                printToCoordinates(coord.Y + 1 , coord.X + 1 ,"0");
+                if (!isCleanerActive)
+                {
+                    if (isSmallSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 1 , coord.X + 1 ,"0");
+                    }
+                    if (isMediumSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 1, coord.X + 1, "00");
+                        printToCoordinates(coord.Y - 1, coord.X - 1, "00");
+                        printToCoordinates(coord.Y, coord.X, "00");
+                    }
+                    if (isBigSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 2, coord.X + 2, "0000");
+                        printToCoordinates(coord.Y + 1, coord.X + 1, "0000");
+                        printToCoordinates(coord.Y - 1, coord.X - 1, "0000");
+                        printToCoordinates(coord.Y - 2, coord.X - 2, "0000");
+                        printToCoordinates(coord.Y, coord.X, "0000");
+                    }
+                    
+                }
+                else //if (isCleanerActive)
+                {// cleaner mode
+                    if (isSmallSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 1, coord.X + 1, " ");
+                    }
+                    if (isMediumSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 1, coord.X + 1, "  ");
+                        printToCoordinates(coord.Y - 1, coord.X - 1, "  ");
+                        printToCoordinates(coord.Y, coord.X, "  ");
+                    }
+                    if (isBigSizePressed)
+                    {
+                        printToCoordinates(coord.Y + 2, coord.X + 2, "    ");
+                        printToCoordinates(coord.Y + 1, coord.X + 1, "    ");
+                        printToCoordinates(coord.Y - 1, coord.X - 1, "    ");
+                        printToCoordinates(coord.Y - 2, coord.X - 2, "    ");
+                        printToCoordinates(coord.Y, coord.X, "    ");
+                    }
+                }
+                
+            }//i >= MAX_WIDTH - 121) && i <= MAX_WIDTH - 119
+            if (coord.Y <= 5 && coord.Y >= 4 && coord.X >= 512 && coord.X <= 514)
+            {// зміна на маленький розміру курсора
+                isSmallSizePressed = true;
+                isMediumSizePressed = false;
+                isBigSizePressed = false;
+            }
+            if (coord.Y <= 10 && coord.Y >= 8 && coord.X >= 511 && coord.X <= 515)
+            {// зміна на середній розміру курсора
+                isSmallSizePressed = false;
+                isMediumSizePressed = true;
+                isBigSizePressed = false;
+            }
+            if (coord.Y <= 16 && coord.Y >= 13 && coord.X >= 510 && coord.X <= 516)
+            {// зміна на великий розміру курсора
+                isSmallSizePressed = false;
+                isMediumSizePressed = false;
+                isBigSizePressed = true;
             }
             if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 607 && coord.X <= 617)
             {// вийти з програми
@@ -90,6 +155,18 @@ int main(int argc, char* argv[])
             if(coord.Y <= 11 && coord.Y >= 8 && coord.X >= 572 && coord.X <= 577)
             {// pink колір
                 SetConsoleTextAttribute(hConsole, 13);
+            }
+            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 542 && coord.X <= 547)
+            {// червоний колір
+                if (isCleanerActive)
+                {
+                    isCleanerActive = false;
+                }
+                else 
+                {
+                    isCleanerActive = true;
+                }
+
             }
 
             //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
