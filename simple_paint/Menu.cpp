@@ -58,7 +58,13 @@ void createMenu()
             for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
             {
 
-                if ((i >= MAX_WIDTH - 121) && i <= MAX_WIDTH - 119)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 121) && i <= MAX_WIDTH - 119)
                 {// small pensil
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "&";
@@ -101,7 +107,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 121) && i <= MAX_WIDTH - 119)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 121) && i <= MAX_WIDTH - 119)
                 {// small pensil
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "&";
@@ -144,7 +156,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 91) && i <= MAX_WIDTH - 86)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 91) && i <= MAX_WIDTH - 86)
                 {// пустий колір
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "#";
@@ -181,8 +199,14 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 25 + 3; i++)
             {
-
-                std::cout << " "; 
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else{std::cout << " ";}
+                 
             }
             std::cout << "X";
             std::cout << "X";
@@ -190,7 +214,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
                 {// medium pensil
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "&";
@@ -227,7 +257,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
                 {// medium pensil
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "&";
@@ -263,7 +299,13 @@ void createMenu()
             std::cout << "          CC        ";
             for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
             {
-                if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
+                if ((i >= MAX_WIDTH - 231) && i <= MAX_WIDTH - 216)
+                {// квадрат
+                    SetConsoleTextAttribute(hConsole, 8);
+                    std::cout << "[";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 122) && i <= MAX_WIDTH - 118)
                 {// medium pensil
                     SetConsoleTextAttribute(hConsole, 8);
                     std::cout << "&";
