@@ -1,41 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 #include "Menu.h"
-
-
-void removeScroll()
-{
-    CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
-
-    // Get console handle and get screen buffer information from that handle.
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
-
-    // Get rid of the scrollbar by setting the screen buffer size the same as 
-    // the console window size. 
-    COORD new_screen_buffer_size;
-
-    // screenBufferInfo.srWindow allows us to obtain the width and height info 
-    // of the visible console in character cells.
-    // That visible portion is what we want to set the screen buffer to, so that 
-    // no scroll bars are needed to view the entire buffer.
-    new_screen_buffer_size.X = screenBufferInfo.srWindow.Right -
-        screenBufferInfo.srWindow.Left + 1; // Columns
-    new_screen_buffer_size.Y = screenBufferInfo.srWindow.Bottom -
-        screenBufferInfo.srWindow.Top + 1; // Rows
-
-    // Set new buffer size
-    SetConsoleScreenBufferSize(hConsole, new_screen_buffer_size);
-}
-
-
-
-void consoleSelectionBlock(HANDLE hin)
-{/*block виділення консолі*/
-    DWORD prev_mode;
-    GetConsoleMode(hin, &prev_mode);
-    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), ENABLE_EXTENDED_FLAGS | (prev_mode & ~ENABLE_QUICK_EDIT_MODE));
-}
+#include "Tools.h"
 
 void printToCoordinates(int x, int y, const char* format, ...)
 {
@@ -47,18 +13,12 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
-void clear() {
-    // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
-    std::cout << "\x1B[2J\x1B[H";
-}
-
-
 int main(int argc, char* argv[])
 {
     
     ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000); //full screan console
 
-    removeScroll();
+    removeScroll();//видалено полосу прокрутки
     
     HANDLE hin = GetStdHandle(STD_INPUT_HANDLE); // отримуємо дескриптор
     INPUT_RECORD InputRecord; // використовується для повернення інформації про вхідні повідомлення у консольному вхідному буфері
@@ -70,7 +30,7 @@ int main(int argc, char* argv[])
     consoleSelectionBlock(hin);
 
 
-    createMenu();
+    createMenu();// створюємо менюшку
 
 
 
@@ -96,7 +56,7 @@ int main(int argc, char* argv[])
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
             if (coord.Y > 30)
             {// заборона малювати на менюшці
-                printToCoordinates(coord.Y + 1 , coord.X + 1 ,"X");
+                printToCoordinates(coord.Y + 1 , coord.X + 1 ,"0");
             }
             if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 607 && coord.X <= 617)
             {// вийти з програми
@@ -122,6 +82,14 @@ int main(int argc, char* argv[])
             if (coord.Y <= 11 && coord.Y >= 8 && coord.X >= 552 && coord.X <= 557)
             {// білий колір
                 SetConsoleTextAttribute(hConsole, 15);
+            }
+            if (coord.Y <= 11 && coord.Y >= 8 && coord.X >= 562 && coord.X <= 567)
+            {// жовтий колір
+                SetConsoleTextAttribute(hConsole, 14);
+            }
+            if(coord.Y <= 11 && coord.Y >= 8 && coord.X >= 572 && coord.X <= 577)
+            {// pink колір
+                SetConsoleTextAttribute(hConsole, 13);
             }
 
             //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;

@@ -1,4 +1,5 @@
 #include "Menu.h"
+//ох зря ти сюди поліз
 // це крінж йобаний
 
 void createMenu()
@@ -7,6 +8,7 @@ void createMenu()
     const int MAX_WIDTH = 633 - 20;
     const int MENU_SIZE = 30;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, 10);//скидуємо до дефолт зеленого
     for (int i = 0; i < MENU_SIZE - 12; i++)
     {
         if (i == 2)
@@ -157,6 +159,18 @@ void createMenu()
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
+                else if ((i >= MAX_WIDTH - 71) && i <= MAX_WIDTH - 66)
+                {//yellow
+                    SetConsoleTextAttribute(hConsole, 14);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 61) && i <= MAX_WIDTH - 56)
+                {//pink
+                    SetConsoleTextAttribute(hConsole, 13);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
                 else{std::cout << " ";}
                 
             }
@@ -173,6 +187,18 @@ void createMenu()
                 if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
                 {//white
                     SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 71) && i <= MAX_WIDTH - 66)
+                {//yellow
+                    SetConsoleTextAttribute(hConsole, 14);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 61) && i <= MAX_WIDTH - 56)
+                {//pink
+                    SetConsoleTextAttribute(hConsole, 13);
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
@@ -194,6 +220,18 @@ void createMenu()
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
+                else if ((i >= MAX_WIDTH - 71) && i <= MAX_WIDTH - 66)
+                {//yellow
+                    SetConsoleTextAttribute(hConsole, 14);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 61) && i <= MAX_WIDTH - 56)
+                {//pink
+                    SetConsoleTextAttribute(hConsole, 13);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
                 else { std::cout << " "; }
             }
             std::cout << "X";
@@ -212,6 +250,18 @@ void createMenu()
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
+                else if ((i >= MAX_WIDTH - 71) && i <= MAX_WIDTH - 66)
+                {//yellow
+                    SetConsoleTextAttribute(hConsole, 14);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 61) && i <= MAX_WIDTH - 56)
+                {//pink
+                    SetConsoleTextAttribute(hConsole, 13);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
                 else { std::cout << " "; }
             }
             std::cout << "X";
@@ -220,6 +270,18 @@ void createMenu()
                 if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
                 {//white
                     SetConsoleTextAttribute(hConsole, 15);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 71) && i <= MAX_WIDTH - 66)
+                {//yellow
+                    SetConsoleTextAttribute(hConsole, 14);
+                    std::cout << "#";
+                    SetConsoleTextAttribute(hConsole, 10);
+                }
+                else if ((i >= MAX_WIDTH - 61) && i <= MAX_WIDTH - 56)
+                {//pink
+                    SetConsoleTextAttribute(hConsole, 13);
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
