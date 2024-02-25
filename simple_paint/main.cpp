@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "Tools.h"
 #include "Rectangle.h"
+#include "Circle.h"
 
 
 void printToCoordinates(int x, int y, const char* format, ...)
@@ -241,13 +242,15 @@ int main(int argc, char* argv[])
 
             }
 
-            std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
+            //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
         }
-        if (isQuadroPressed)
+        if (isQuadroPressed && !isCirclePressed)
         {
             drawRectangle(coordForRectangle);
-            //coordForRectangle.clear();
-            //isQuadroPressed = false;
+        }
+        if (isCirclePressed)
+        {
+            drawCircle(coordForRectangle);
         }
     }
 
