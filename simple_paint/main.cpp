@@ -18,38 +18,26 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
-void bucketAll(int y, int x, std::vector<std::vector<int>> &coordForKnowing)
+void bucketAll(int y, int x)
 {
-    for (auto &it : coordForKnowing)
-    {
-        if (it[0] == y + 1 && it[1] == x+1)
-        {
-            return;
-        }
-    }
     printToCoordinates(x + 1, y + 1, "0");
-    
     printToCoordinates(x + 1, y, "0");
-
     printToCoordinates(x, y + 1, "0");
-
     printToCoordinates(x, y, "0");
-
     printToCoordinates(x - 1, y - 1, "0");
-
     printToCoordinates(x - 1, y, "0");
-
     printToCoordinates(x, y - 1, "0");
 
-    bucketAll(x + 1, y + 1, coordForKnowing);
-    bucketAll(x + 1, y, coordForKnowing);
-    bucketAll(x, y + 1, coordForKnowing);
-    bucketAll(x, y, coordForKnowing);
-    bucketAll(x - 1, y - 1, coordForKnowing);
-    bucketAll(x - 1, y, coordForKnowing);
-    bucketAll(x, y - 1, coordForKnowing);
+    bucketAll(x + 1, y + 1);
+    bucketAll(x + 1, y);
+    bucketAll(x, y + 1);
+    bucketAll(x, y);
+    bucketAll(x - 1, y - 1);
+    bucketAll(x - 1, y);
+    bucketAll(x, y - 1);
 
-    
+
+
 }
 
 int main(int argc, char* argv[])
@@ -93,9 +81,10 @@ int main(int argc, char* argv[])
 
     bool isFullBucketPressed = false;
 
+    bool popBack = true;
+
     std::vector<std::vector<int>> coordForRectangle;
 
-    std::vector<std::vector<int>> coordForKnowing;
 
     while (!isExitPressed)
     {
@@ -133,7 +122,7 @@ int main(int argc, char* argv[])
         {
             coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
             coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            if (coord.Y > 30 && !isQuadroPressed && !isCirclePressed)
+            if (coord.Y > 30 && !isQuadroPressed && !isCirclePressed && !isFullBucketPressed)
             {// заборона малювати на менюшці
                 if (!isCleanerActive)
                 {
@@ -303,11 +292,8 @@ int main(int argc, char* argv[])
         }
         if (isFullBucketPressed && coord.Y >30)
         {
-            std::vector<int> temp;
-            temp.push_back(coord.X);
-            temp.push_back(coord.Y);
-            coordForKnowing.push_back(temp);
-            bucketAll(coord.X,coord.Y, coordForKnowing);
+            
+            bucketAll(coord.X,coord.Y);
         }
     }
 
