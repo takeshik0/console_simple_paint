@@ -18,23 +18,50 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
-void bucketAll(int y, int x)
-{
-    printToCoordinates(x + 1, y + 1, "0");
-    printToCoordinates(x + 1, y, "0");
-    printToCoordinates(x, y + 1, "0");
-    printToCoordinates(x, y, "0");
-    printToCoordinates(x - 1, y - 1, "0");
-    printToCoordinates(x - 1, y, "0");
-    printToCoordinates(x, y - 1, "0");
+void bucketAll(int x, int y)
+{//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
 
+    // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord;
+    coord.X = x; // X-координата
+    coord.Y = y;  // Y-координата
+    DWORD count;
+    //LPWSTR
+    CHAR_INFO charInfo;
+
+    // Отримати інформацію про символ на вказаних координатах
+    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
+    if (charInfo.Char.AsciiChar == '0')
+    {
+        printToCoordinates(y, x, "0");
+        return;
+    }
+    
+    //x++;
+    //y++;
+
+    
     bucketAll(x + 1, y + 1);
+    bucketAll(x - 1, y - 1);
     bucketAll(x + 1, y);
     bucketAll(x, y + 1);
-    bucketAll(x, y);
     bucketAll(x - 1, y - 1);
     bucketAll(x - 1, y);
     bucketAll(x, y - 1);
+
+    printToCoordinates(y + 1, x + 1, "0");
+    //bucketAll(x + 1, y + 1);
+    printToCoordinates(y, x + 1, "0");
+    //bucketAll(x + 1, y);
+    printToCoordinates(y + 1, x, "0");
+    //bucketAll(x, y + 1);
+    printToCoordinates(y - 1, x - 1, "0");
+    //bucketAll(x - 1, y - 1);
+    printToCoordinates(y, x - 1, "0");
+    //bucketAll(x - 1, y);
+    printToCoordinates( y - 1, x, "0");
+    //bucketAll(x, y - 1);
 
 
 
