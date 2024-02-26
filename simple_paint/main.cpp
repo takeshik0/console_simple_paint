@@ -20,7 +20,8 @@ void printToCoordinates(int x, int y, const char* format, ...)
 
 void bucketAll(int x, int y)
 {//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
-
+    try
+    {
     // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord;
@@ -32,38 +33,52 @@ void bucketAll(int x, int y)
 
     // Отримати інформацію про символ на вказаних координатах
     ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
-    if (charInfo.Char.AsciiChar == '0')
+    
+
+
+        if (charInfo.Char.AsciiChar == '0')
+        {
+            printToCoordinates(y, x, "0");
+            return;
+        }
+
+        //x++;
+        //y++;
+
+
+
+
+
+        bucketAll(x + 1, y + 1);
+        bucketAll(x - 1, y - 1);
+        bucketAll(x + 1, y - 1);
+        bucketAll(x - 1, y + 1);
+        //bucketAll(x + 1, y);
+
+
+        printToCoordinates(y + 1, x + 1, "0");
+        printToCoordinates(y - 1, x - 1, "0");
+        printToCoordinates(y - 1, x + 1, "0");
+        printToCoordinates(y + 1, x - 1, "0");
+        printToCoordinates(y - 1, x, "0");
+
+
+        //bucketAll(x + 1, y);
+        //bucketAll(x - 1, y);
+        //bucketAll(x, y + 1);
+        //bucketAll(x, y - 1);
+
+        //printToCoordinates(y - 1, x, "0");
+
+
+        //bucketAll(x, y - 1);
+
+
+    }
+    catch (const std::exception&)
     {
-        printToCoordinates(y, x, "0");
         return;
     }
-    
-    //x++;
-    //y++;
-
-    
-    bucketAll(x + 1, y + 1);
-    bucketAll(x - 1, y - 1);
-    bucketAll(x + 1, y);
-    bucketAll(x, y + 1);
-    bucketAll(x - 1, y - 1);
-    bucketAll(x - 1, y);
-    bucketAll(x, y - 1);
-
-    printToCoordinates(y + 1, x + 1, "0");
-    //bucketAll(x + 1, y + 1);
-    printToCoordinates(y, x + 1, "0");
-    //bucketAll(x + 1, y);
-    printToCoordinates(y + 1, x, "0");
-    //bucketAll(x, y + 1);
-    printToCoordinates(y - 1, x - 1, "0");
-    //bucketAll(x - 1, y - 1);
-    printToCoordinates(y, x - 1, "0");
-    //bucketAll(x - 1, y);
-    printToCoordinates( y - 1, x, "0");
-    //bucketAll(x, y - 1);
-
-
 
 }
 
@@ -320,7 +335,7 @@ int main(int argc, char* argv[])
         if (isFullBucketPressed && coord.Y >30)
         {
             
-            bucketAll(coord.X,coord.Y);
+            bucketAll(coord.X,coord.Y - 1);
         }
     }
 
