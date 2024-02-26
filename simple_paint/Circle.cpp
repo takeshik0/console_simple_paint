@@ -17,21 +17,16 @@ void drawCircle(std::vector<std::vector<int>>& coordForRectangle)
         while (currBottom != coordForRectangle[coordForRectangle.size() - 1][1] )
         {
             int mid = coordForRectangle[0][1] + (coordForRectangle[coordForRectangle.size() - 1][1] - coordForRectangle[0][1]) / 2;
-            printToCoordinates(currBottom, currBottomLeft, "8");
             currBottom++;
             if (currBottom % 2 == 0 && !(currBottom > mid))
             {
                 currBottomLeft--;
             }
-            printToCoordinates(currBottom, currBottomLeft, "8");
             if (currBottom % 2 == 0 && currBottom > mid)
             {
+
                 currBottomLeft++;
             }
-            //if (currBottom > coordForRectangle[0][1] + coordForRectangle[coordForRectangle.size() - 1][1] / 2)
-            //{
-            //    break;
-            //}
             printToCoordinates(currBottom, currBottomLeft, "8");
         }
 
@@ -40,17 +35,16 @@ void drawCircle(std::vector<std::vector<int>>& coordForRectangle)
         while (currRight != coordForRectangle[coordForRectangle.size() - 1][0] )
         {
             int mid = coordForRectangle[0][0] + (coordForRectangle[coordForRectangle.size() - 1][0] - coordForRectangle[0][0]) / 2;
-            printToCoordinates(currRightTop, currRight, "8");
             currRight++;
             if (currRight % 6 == 0 && !(currRight > mid))
             {
                 currRightTop--;
             }
-            printToCoordinates(currRightTop, currRight, "8");
             if (currRight % 6 == 0 && currRight > mid)
             {
                 currRightTop++;
             }
+
             
             printToCoordinates(currRightTop, currRight, "8");
         }

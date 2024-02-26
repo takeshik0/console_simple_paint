@@ -18,10 +18,27 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
+//bool checkCoords(int x, int y)
+//{
+//    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//    COORD coord;
+//    coord.X = x; // X-координата
+//    coord.Y = y;  // Y-координата
+//    DWORD count;
+//    CHAR_INFO charInfo;
+//    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
+//    if (charInfo.Char.AsciiChar == '0')
+//    {
+//        printToCoordinates(y, x, "0");
+//        return true;
+//    }
+//    return false;
+//}
+
 void bucketAll(int x, int y)
 {//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
 
-    // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами
+    // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами. знайшов але тепер воно погано працює
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord;
     coord.X = x; // X-координата
@@ -37,19 +54,12 @@ void bucketAll(int x, int y)
         return;
     }
 
-
-    coord.X = x + 1; // X-координата
-    coord.Y = y + 1;  // Y-координата
-    DWORD count;
-    CHAR_INFO charInfo;
-    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
-    if (charInfo.Char.AsciiChar == '0')
-    {
-        printToCoordinates(y, x, "0");
-        return;
-    }
-
-
+    //if (checkCoords(x + 1, y + 1))return;
+    //if (checkCoords(x - 1, y - 1))return;
+    //if (checkCoords(x + 1, y - 1))return;
+    //if (checkCoords(x - 1, y + 1))return;
+    //if (checkCoords(x + 1, y + 1))return;
+    //if (checkCoords(x + 1, y + 1))return;
 
 
 
