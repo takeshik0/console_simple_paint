@@ -5,7 +5,7 @@
 void createMenu()
 {
     //вже ні хрена не макс(не зайка) відтх просто я не придумав нічо іншого ніж просто замінювати пробіли менюшки на знаки
-    const int MAX_WIDTH = 633 - 20;
+    const int MAX_WIDTH = 613;
     const int MENU_SIZE = 30;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 10);//скидуємо до дефолт зеленого
@@ -18,7 +18,7 @@ void createMenu()
 
             
             std::cout << "            CCCCCC  ";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 91) && i <= MAX_WIDTH - 86)
                 {// пустий колір
@@ -56,7 +56,7 @@ void createMenu()
             std::cout << "\n";
             std::cout << "          CC      CC";
             
-            for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 25; i++)
             {
                 
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
@@ -112,7 +112,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 24; i++)
             {
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
                 {// заливка
@@ -173,7 +173,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 23; i++)
             {
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
                 {// заливка
@@ -228,7 +228,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 25 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 22; i++)
             {
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
                 {// заливка
@@ -255,7 +255,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 26 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 23; i++)
             {
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
                 {// заливка
@@ -310,7 +310,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 27 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 24; i++)
             {
                 if ((i >= MAX_WIDTH - 431) && i <= MAX_WIDTH - 421)
                 {// заливка
@@ -364,7 +364,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "          CC        ";
-            for (int i = 0; i < MAX_WIDTH - 28 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 25; i++)
             {
                 if ((i >= MAX_WIDTH - 257) && i <= MAX_WIDTH - 251)
                 {// коло
@@ -412,7 +412,7 @@ void createMenu()
             std::cout << "X";
             std::cout << "\n";
             std::cout << "           CC     CC";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 81) && i <= MAX_WIDTH - 76)
                 {//white
@@ -462,7 +462,7 @@ void createMenu()
             std::cout << "            CCCCCC  ";
             std::cout << "\n";
             std::cout << "                    ";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 123) && i <= MAX_WIDTH - 117)
                 {// big pensil
@@ -474,7 +474,7 @@ void createMenu()
             }
             std::cout << "\n";
             std::cout << "                    ";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 123) && i <= MAX_WIDTH - 117)
                 {// big pensil
@@ -486,7 +486,7 @@ void createMenu()
             }
             std::cout << "\n";
             std::cout << "                    ";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 123) && i <= MAX_WIDTH - 117)
                 {// big pensil
@@ -498,7 +498,7 @@ void createMenu()
             }
             std::cout << "\n";
             std::cout << "                    ";
-            for (int i = 0; i < MAX_WIDTH - 29 + 3; i++)
+            for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 if ((i >= MAX_WIDTH - 123) && i <= MAX_WIDTH - 117)
                 {// big pensil

@@ -6,80 +6,80 @@ void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
     {
         return;
     }
-    if (coordForRectangle[coordForRectangle.size() - 1][0] - coordForRectangle[0][0] < 0 || coordForRectangle[coordForRectangle.size() - 1][1] - coordForRectangle[0][1] < 0)
+    // якщо не буде цього іфа, то програма, коли намагаються малювати не з правого кута в лівий, ламається, а з ним почати малювати інакше не можна
+    bool isNotFromLeftToRightCorner = coordForRectangle.back().front() - coordForRectangle.front().front() < 0 || coordForRectangle.back().back() - coordForRectangle.front().back() < 0;
+    if (isNotFromLeftToRightCorner)
     {
         return;
     }
-    else
+    int currBottom = coordForRectangle.front().back();
+    int currBottomLeft = coordForRectangle.front().front();
+    while (currBottom != coordForRectangle.back().back())
     {
-        int currBottom = coordForRectangle[0][1];
-        int currBottomLeft = coordForRectangle[0][0];
-        while (currBottom != coordForRectangle[coordForRectangle.size() - 1][1] )
+        int mid = coordForRectangle.front().back() + (coordForRectangle.back().back() - coordForRectangle.front().back()) / 2;
+        currBottom++;
+        if (currBottom % 2 == 0 && !(currBottom > mid))
         {
-            int mid = coordForRectangle[0][1] + (coordForRectangle[coordForRectangle.size() - 1][1] - coordForRectangle[0][1]) / 2;
-            currBottom++;
-            if (currBottom % 2 == 0 && !(currBottom > mid))
-            {
-                currBottomLeft--;
-            }
-            if (currBottom % 2 == 0 && currBottom > mid)
-            {
+            currBottomLeft--;
+        }
+        if (currBottom % 2 == 0 && currBottom > mid)
+        {
 
-                currBottomLeft++;
-            }
-            printToCoordinates(currBottom, currBottomLeft, "8");
+            currBottomLeft++;
         }
-
-        int currRight = coordForRectangle[0][0];
-        int currRightTop = coordForRectangle[0][1];
-        while (currRight != coordForRectangle[coordForRectangle.size() - 1][0] )
-        {
-            int mid = coordForRectangle[0][0] + (coordForRectangle[coordForRectangle.size() - 1][0] - coordForRectangle[0][0]) / 2;
-            currRight++;
-            if (currRight % 6 == 0 && !(currRight > mid))
-            {
-                currRightTop--;
-            }
-            if (currRight % 6 == 0 && currRight > mid)
-            {
-                currRightTop++;
-            }
-
-            
-            printToCoordinates(currRightTop, currRight, "8");
-        }
-        int currUp = coordForRectangle[coordForRectangle.size() - 1][1];
-        int currUPRight = coordForRectangle[coordForRectangle.size() - 1][0];
-        while (currUp != coordForRectangle[0][1])
-        {
-            int mid = coordForRectangle[coordForRectangle.size() - 1][1] + (coordForRectangle[0][1] - coordForRectangle[coordForRectangle.size() - 1][1]) / 2;
-            if (currUp % 2 == 0 && !(currUp < mid))
-            {
-                currUPRight++;
-            }
-            if (currUp % 2 == 0 && currUp < mid)
-            {
-                currUPRight--;
-            }
-            printToCoordinates(currUp, currUPRight, "8");
-            currUp--;
-        }
-        int currLeft = coordForRectangle[coordForRectangle.size() - 1][0];
-        int currLeftTop = coordForRectangle[coordForRectangle.size() - 1][1];
-        while (currLeft != coordForRectangle[0][0])
-        {
-            int mid = coordForRectangle[coordForRectangle.size() - 1][0] + (coordForRectangle[0][0] - coordForRectangle[coordForRectangle.size() - 1][0]) / 2;
-            if (currLeft % 6 == 0 && !(currLeft < mid))
-            {
-                currLeftTop++;
-            }
-            if (currLeft % 6 == 0 && (currLeft < mid))
-            {
-                currLeftTop--;
-            }
-            printToCoordinates(currLeftTop, currLeft, "8");
-            currLeft--;
-        }
-        printToCoordinates(coordForRectangle[coordForRectangle.size() - 1][1], coordForRectangle[coordForRectangle.size() - 1][0], "8");
+        printToCoordinates(currBottom, currBottomLeft, "8");
     }
+
+    int currRight = coordForRectangle.front().front();
+    int currRightTop = coordForRectangle.front().back();
+    while (currRight != coordForRectangle.back().front())
+    {
+        int mid = coordForRectangle.front().front() + (coordForRectangle.back().front() - coordForRectangle.front().front()) / 2;
+        currRight++;
+        if (currRight % 6 == 0 && !(currRight > mid))
+        {
+            currRightTop--;
+        }
+        if (currRight % 6 == 0 && currRight > mid)
+        {
+            currRightTop++;
+        }
+
+
+        printToCoordinates(currRightTop, currRight, "8");
+    }
+    int currUp = coordForRectangle.back().back();
+    int currUPRight = coordForRectangle.back().front();
+    while (currUp != coordForRectangle.front().back())
+    {
+        int mid = coordForRectangle.back().back() + (coordForRectangle.front().back() - coordForRectangle.back().back()) / 2;
+        if (currUp % 2 == 0 && !(currUp < mid))
+        {
+            currUPRight++;
+        }
+        if (currUp % 2 == 0 && currUp < mid)
+        {
+            currUPRight--;
+        }
+        printToCoordinates(currUp, currUPRight, "8");
+        currUp--;
+    }
+    int currLeft = coordForRectangle.back().front();
+    int currLeftTop = coordForRectangle.back().back();
+    while (currLeft != coordForRectangle.front().front())
+    {
+        int mid = coordForRectangle.back().front() + (coordForRectangle.front().front() - coordForRectangle.back().front()) / 2;
+        if (currLeft % 6 == 0 && !(currLeft < mid))
+        {
+            currLeftTop++;
+        }
+        if (currLeft % 6 == 0 && (currLeft < mid))
+        {
+            currLeftTop--;
+        }
+        printToCoordinates(currLeftTop, currLeft, "8");
+        currLeft--;
+    }
+    printToCoordinates(coordForRectangle.back().back(), coordForRectangle.back().front(), "8");
+
 }
