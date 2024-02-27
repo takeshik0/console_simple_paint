@@ -1,6 +1,16 @@
 # Prerequisites
 *.d
 
+# Build folder
+*x64
+*x32
+*Debug
+
+# User Settings
+*.vsxproj.
+*.vsxproj
+*.vs
+
 # Compiled Object files
 *.slo
 *.lo
