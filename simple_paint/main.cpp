@@ -18,23 +18,6 @@ void printToCoordinates(int x, int y, const char* format, ...)
     fflush(stdout);
 }
 
-//bool checkCoords(int x, int y)
-//{
-//    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-//    COORD coord;
-//    coord.X = x; // X-координата
-//    coord.Y = y;  // Y-координата
-//    DWORD count;
-//    CHAR_INFO charInfo;
-//    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
-//    if (charInfo.Char.AsciiChar == '0')
-//    {
-//        printToCoordinates(y, x, "0");
-//        return true;
-//    }
-//    return false;
-//}
-
 void bucketAll(int x, int y)
 {//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
 
@@ -54,21 +37,12 @@ void bucketAll(int x, int y)
         return;
     }
 
-    //if (checkCoords(x + 1, y + 1))return;
-    //if (checkCoords(x - 1, y - 1))return;
-    //if (checkCoords(x + 1, y - 1))return;
-    //if (checkCoords(x - 1, y + 1))return;
-    //if (checkCoords(x + 1, y + 1))return;
-    //if (checkCoords(x + 1, y + 1))return;
-
-
 
 
     bucketAll(x + 1, y + 1);
     bucketAll(x - 1, y - 1);
     bucketAll(x + 1, y - 1);
     bucketAll(x - 1, y + 1);
-    //bucketAll(x + 1, y);
 
 
     printToCoordinates(y + 1, x + 1, "0");
@@ -80,27 +54,12 @@ void bucketAll(int x, int y)
     printToCoordinates(y, x + 1, "0");
     printToCoordinates(y + 1, x, "0");
 
-
-    //bucketAll(x + 1, y);
-    //bucketAll(x - 1, y);
-    //bucketAll(x, y + 1);
-    //bucketAll(x, y - 1);
-
-    //printToCoordinates(y - 1, x, "0");
-
-
-    //bucketAll(x, y - 1);
-
-
-
-
 }
 
 int main(int argc, char* argv[])
 {
+    makeFullScreanConsole();
     
-    ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000); //full screan console
-
     removeScroll();//видалено полосу прокрутки
     
     HANDLE hin = GetStdHandle(STD_INPUT_HANDLE); // отримуємо дескриптор
@@ -202,7 +161,7 @@ int main(int argc, char* argv[])
                     }
                     
                 }
-                else //if (isCleanerActive)
+                else
                 {// cleaner mode
                     if (isSmallSizePressed)
                     {
@@ -356,7 +315,6 @@ int main(int argc, char* argv[])
 
 
 
-    //system("pause");
     return 0;
 
 }

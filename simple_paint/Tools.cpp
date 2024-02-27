@@ -26,6 +26,11 @@ void removeScroll()
     SetConsoleScreenBufferSize(hConsole, new_screen_buffer_size);
 }
 
+void makeFullScreanConsole()
+{
+    ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+}
+
 
 
 void consoleSelectionBlock(HANDLE hin)
