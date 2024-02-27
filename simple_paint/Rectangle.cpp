@@ -1,41 +1,41 @@
 #include "Rectangle.h"
 
-void drawRectangle(const std::vector<std::vector<int>>& coordForRectangle)
+void drawRectangle(const COORD leftUpper, const COORD rightBottom)
 {
-    if (coordForRectangle.empty())
+    if (leftUpper.X == 0 && leftUpper.Y == 0)
     {
         return;
     }
     // якщо не буде цього іфа, то програма, коли намагаються малювати не з правого кута в лівий, ламається, а з ним почати малювати інакше не можна
-    bool isNotFromLeftToRightCorner = coordForRectangle.back().front() - coordForRectangle.front().front() < 0 || coordForRectangle.back().back() - coordForRectangle.front().back() < 0;
+    bool isNotFromLeftToRightCorner = rightBottom.X - leftUpper.X < 0 || rightBottom.Y - leftUpper.Y < 0;
     if (isNotFromLeftToRightCorner)
     {
         return;
     }
-    int currBottom = coordForRectangle.front().back();
-    while (currBottom != coordForRectangle.back().back())
+    int currBottom = leftUpper.Y;
+    while (currBottom != rightBottom.Y)
     {
         currBottom++;
-        printToCoordinates(currBottom, coordForRectangle.front().front(), "8");
+        printToCoordinates(currBottom, leftUpper.X, "8");
     }
-    int currRight = coordForRectangle.front().front();
-    while (currRight != coordForRectangle.back().front())
+    int currRight = leftUpper.X;
+    while (currRight != rightBottom.X)
     {
         currRight++;
-        printToCoordinates(coordForRectangle.front().back(), currRight, "8");
+        printToCoordinates(leftUpper.Y, currRight, "8");
     }
-    int currUp = coordForRectangle.back().back();
-    while (currUp != coordForRectangle.front().back())
+    int currUp = rightBottom.Y;
+    while (currUp != leftUpper.Y)
     {
         currUp--;
-        printToCoordinates(currUp, coordForRectangle.back().front(), "8");
+        printToCoordinates(currUp, rightBottom.X, "8");
     }
-    int currLeft = coordForRectangle.back().front();
-    while (currLeft != coordForRectangle.front().front())
+    int currLeft = rightBottom.X;
+    while (currLeft != leftUpper.X)
     {
         currLeft--;
-        printToCoordinates(coordForRectangle.back().back(), currLeft, "8");
+        printToCoordinates(rightBottom.Y, currLeft, "8");
     }
-    printToCoordinates(coordForRectangle.back().back(), coordForRectangle.back().front(), "8");
+    printToCoordinates(rightBottom.Y, rightBottom.X, "8");
 
 }

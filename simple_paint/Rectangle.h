@@ -2,4 +2,4 @@
 #include<vector>
 #include"Tools.h"
 
-void drawRectangle(const std::vector<std::vector<int>>& coordForRectangle);
+void drawRectangle(const COORD leftUpper,const COORD rightBottom);

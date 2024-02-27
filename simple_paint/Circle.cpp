@@ -1,22 +1,22 @@
 #include "Circle.h"
 
-void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
+void drawCircle(const COORD leftUpper, const COORD rightBottom)
 {
-    if (coordForRectangle.empty())
+    if (leftUpper.X == 0 && leftUpper.Y == 0)
     {
         return;
     }
     // якщо не буде цього іфа, то програма, коли намагаються малювати не з правого кута в лівий, ламається, а з ним почати малювати інакше не можна
-    bool isNotFromLeftToRightCorner = coordForRectangle.back().front() - coordForRectangle.front().front() < 0 || coordForRectangle.back().back() - coordForRectangle.front().back() < 0;
+    bool isNotFromLeftToRightCorner = rightBottom.X - leftUpper.X < 0 || rightBottom.Y - leftUpper.Y < 0;
     if (isNotFromLeftToRightCorner)
     {
         return;
     }
-    int currBottom = coordForRectangle.front().back();
-    int currBottomLeft = coordForRectangle.front().front();
-    while (currBottom != coordForRectangle.back().back())
+    int currBottom = leftUpper.Y;
+    int currBottomLeft = leftUpper.X;
+    while (currBottom != rightBottom.Y)
     {
-        int mid = coordForRectangle.front().back() + (coordForRectangle.back().back() - coordForRectangle.front().back()) / 2;
+        int mid = leftUpper.Y + (rightBottom.Y - leftUpper.Y) / 2;
         currBottom++;
         if (currBottom % 2 == 0 && !(currBottom > mid))
         {
@@ -24,17 +24,17 @@ void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
         }
         if (currBottom % 2 == 0 && currBottom > mid)
         {
-
+             
             currBottomLeft++;
         }
         printToCoordinates(currBottom, currBottomLeft, "8");
     }
 
-    int currRight = coordForRectangle.front().front();
-    int currRightTop = coordForRectangle.front().back();
-    while (currRight != coordForRectangle.back().front())
+    int currRight = leftUpper.X;
+    int currRightTop = leftUpper.Y;
+    while (currRight != rightBottom.X)
     {
-        int mid = coordForRectangle.front().front() + (coordForRectangle.back().front() - coordForRectangle.front().front()) / 2;
+        int mid = leftUpper.X + (rightBottom.X - leftUpper.X) / 2;
         currRight++;
         if (currRight % 6 == 0 && !(currRight > mid))
         {
@@ -48,11 +48,11 @@ void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
 
         printToCoordinates(currRightTop, currRight, "8");
     }
-    int currUp = coordForRectangle.back().back();
-    int currUPRight = coordForRectangle.back().front();
-    while (currUp != coordForRectangle.front().back())
+    int currUp = rightBottom.Y;
+    int currUPRight = rightBottom.X;
+    while (currUp != leftUpper.Y)
     {
-        int mid = coordForRectangle.back().back() + (coordForRectangle.front().back() - coordForRectangle.back().back()) / 2;
+        int mid = rightBottom.Y + (leftUpper.Y - rightBottom.Y) / 2;
         if (currUp % 2 == 0 && !(currUp < mid))
         {
             currUPRight++;
@@ -64,11 +64,11 @@ void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
         printToCoordinates(currUp, currUPRight, "8");
         currUp--;
     }
-    int currLeft = coordForRectangle.back().front();
-    int currLeftTop = coordForRectangle.back().back();
-    while (currLeft != coordForRectangle.front().front())
+    int currLeft = rightBottom.X;
+    int currLeftTop = rightBottom.Y;
+    while (currLeft != leftUpper.X)
     {
-        int mid = coordForRectangle.back().front() + (coordForRectangle.front().front() - coordForRectangle.back().front()) / 2;
+        int mid = rightBottom.X + (leftUpper.X - rightBottom.X) / 2;
         if (currLeft % 6 == 0 && !(currLeft < mid))
         {
             currLeftTop++;
@@ -80,6 +80,6 @@ void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
         printToCoordinates(currLeftTop, currLeft, "8");
         currLeft--;
     }
-    printToCoordinates(coordForRectangle.back().back(), coordForRectangle.back().front(), "8");
+    printToCoordinates(rightBottom.Y, rightBottom.X, "8");
 
 }

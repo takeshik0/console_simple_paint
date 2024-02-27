@@ -95,7 +95,6 @@ void draw(BrushSize &brushSize, COORD coords, std::string whatToDraw)
 }
 
 
-
 int main(int argc, char* argv[])
 {
     makeFullScreanConsole();
@@ -128,7 +127,13 @@ int main(int argc, char* argv[])
 
     DrawingType drawingType = DrawingType::None;
 
-    std::vector<std::vector<int>> coordsForRectangle;
+    bool startOfRectangleSet = false;
+
+    bool startOfCircleSet = false;
+
+
+    COORD leftUpper{ .X = 0, .Y = 0 };
+    COORD rightBottom{ .X = 0,.Y = 0 };
 
 
 
@@ -140,7 +145,12 @@ int main(int argc, char* argv[])
         {
             coords = InputRecord.Event.MouseEvent.dwMousePosition;
 
-            coordsForRectangle.clear();
+            leftUpper.X = 0, leftUpper.Y = 0 ;
+            rightBottom.X = 0, rightBottom.Y = 0 ;
+
+            startOfRectangleSet = false;
+
+            startOfCircleSet = false;
 
             RectangleOf clearButton{
                 .leftUpper = {.X = 10, .Y = 2},
@@ -153,12 +163,13 @@ int main(int argc, char* argv[])
 
                 createMenu();
 
-                isExitPressed = false;
-
                 brushSize = BrushSize::Small;
 
                 drawingType = DrawingType::None;
 
+                startOfRectangleSet = false;
+
+                startOfCircleSet = false;
 
             }
         }
@@ -181,11 +192,19 @@ int main(int argc, char* argv[])
             }
             else if (coords.Y > 30 && (drawingType == DrawingType::Quadro) && !(drawingType == DrawingType::Circle))
             {
-                coordsForRectangle.push_back({ coords.X + 1 ,coords.Y + 1 });
+                if (!startOfRectangleSet){
+                    leftUpper = coords;
+                    startOfRectangleSet = true;
+                }
+                rightBottom = coords;
             }
             else if (coords.Y > 30 && !(drawingType == DrawingType::Quadro) && (drawingType == DrawingType::Circle))
             {
-                coordsForRectangle.push_back({ coords.X + 1 ,coords.Y + 1 });
+                if (!startOfCircleSet) {
+                    leftUpper = coords;
+                    startOfCircleSet = true;
+                }
+                rightBottom = coords;
             }
 
             RectangleOf smallSizePen{
@@ -258,7 +277,7 @@ int main(int argc, char* argv[])
             {// малювати коло
                 if (!(drawingType == DrawingType::Circle))
                 {
-                    drawingType = DrawingType::Circle;
+                    drawingType = DrawingType::Circle; 
                 }
                 else
                 {
@@ -356,13 +375,13 @@ int main(int argc, char* argv[])
 #endif // DISPLAY_COORDS
  
         }
-        if (drawingType == DrawingType::Quadro && !(drawingType == DrawingType::Circle))
-        {
-            drawRectangle(coordsForRectangle);
+        if (coords.Y > 30 && drawingType == DrawingType::Quadro && !(drawingType == DrawingType::Circle))
+        { 
+            drawRectangle(leftUpper,rightBottom);
         }
         if (drawingType == DrawingType::Circle)
         {
-            drawCircle(coordsForRectangle);
+            drawCircle(leftUpper, rightBottom);
         }
         if (drawingType == DrawingType::FullBucket && coords.Y >30)
         {
