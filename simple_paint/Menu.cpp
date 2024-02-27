@@ -1,15 +1,15 @@
 #include "Menu.h"
 //ох зря ти сюди поліз
-// це крінж йобаний
+// це крінж
 
 void createMenu()
 {
-    //вже ні хрена не макс(не зайка) відтх просто я не придумав нічо іншого ніж просто замінювати пробіли менюшки на знаки
+    //вже не MAX_WIDTH, просто я не придумав нічо іншого ніж просто замінювати пробіли менюшки на знаки
     const int MAX_WIDTH = 613;
-    const int MENU_SIZE = 30;
+    const int MENU_SIZE = 15;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 10);//скидуємо до дефолт зеленого
-    for (int i = 0; i < MENU_SIZE - 12 - 2 - 3; i++)
+    for (int i = 0; i < MENU_SIZE; i++)
     {
         if (i == 2)
         {

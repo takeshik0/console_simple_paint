@@ -7,7 +7,7 @@ void drawRectangle(const std::vector<std::vector<int>>& coordForRectangle)
         return;
     }
     // якщо не буде цього іфа, то програма, коли намагаються малювати не з правого кута в лівий, ламається, а з ним почати малювати інакше не можна
-    bool isNotFromLeftToRightCorner = coordForRectangle.back().front() - coordForRectangle.front().front() < 0 || coordForRectangle.back().front() - coordForRectangle.front().back() < 0;
+    bool isNotFromLeftToRightCorner = coordForRectangle.back().front() - coordForRectangle.front().front() < 0 || coordForRectangle.back().back() - coordForRectangle.front().back() < 0;
     if (isNotFromLeftToRightCorner)
     {
         return;
