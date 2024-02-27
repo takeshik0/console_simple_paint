@@ -2,6 +2,7 @@
 *.d
 
 # Build folder
+*x64/Debug
 *x64
 *x32
 *Debug
