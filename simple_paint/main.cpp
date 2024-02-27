@@ -7,25 +7,31 @@
 #include "Rectangle.h"
 #include "Circle.h"
 
+//#define SEE_COORDS
 
-void printToCoordinates(int x, int y, const char* format, ...)
+bool onRightButtonPressed (INPUT_RECORD InputRecord)
 {
-    va_list args;
-    va_start(args, format);
-    printf("\033[%d;%dH", x, y);
-    vprintf(format, args);
-    va_end(args);
-    fflush(stdout);
+    return InputRecord.Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED;
+}
+bool onLeftButtonPressed(INPUT_RECORD InputRecord)
+{
+    return InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED;
 }
 
-void bucketAll(int x, int y)
-{//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
+enum class BrushSize
+{
+    Small, Medium, Big
+};
 
-    // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами. знайшов але тепер воно погано працює
+enum class DrawingType 
+{
+    None, Cleaner, Circle, Quadro, FullBucket
+};
+
+void bucketAll(short x, short y)
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord;
-    coord.X = x; // X-координата
-    coord.Y = y;  // Y-координата
+    COORD coord{ .X = x, .Y = y};
     DWORD count;
     CHAR_INFO charInfo;
 
@@ -56,6 +62,30 @@ void bucketAll(int x, int y)
 
 }
 
+void draw(BrushSize &brushSize, COORD coord, std::string whatToDraw)
+{
+    if (brushSize == BrushSize::Small)
+    {
+        printToCoordinates(coord.Y + 1, coord.X + 1, whatToDraw);
+    }
+    if (brushSize == BrushSize::Medium)
+    {
+        printToCoordinates(coord.Y + 1, coord.X + 1, whatToDraw + whatToDraw);
+        printToCoordinates(coord.Y - 1, coord.X - 1, whatToDraw + whatToDraw);
+        printToCoordinates(coord.Y, coord.X, whatToDraw + whatToDraw);
+    }
+    if (brushSize == BrushSize::Big)
+    {
+        printToCoordinates(coord.Y + 2, coord.X + 2, whatToDraw + whatToDraw + whatToDraw + whatToDraw);//не думаю що це правильно
+        printToCoordinates(coord.Y + 1, coord.X + 1, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
+        printToCoordinates(coord.Y - 1, coord.X - 1, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
+        printToCoordinates(coord.Y - 2, coord.X - 2, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
+        printToCoordinates(coord.Y, coord.X, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
+    }
+}
+
+
+
 int main(int argc, char* argv[])
 {
     makeFullScreanConsole();
@@ -82,139 +112,75 @@ int main(int argc, char* argv[])
 
     bool isExitPressed = false;
 
-    bool isCleanerActive = false;
 
-    bool isSmallSizePressed = true;
 
-    bool isMediumSizePressed = false;
+    BrushSize brushSize = BrushSize::Small;
 
-    bool isBigSizePressed = false;
-
-    bool isQuadroPressed = false;
-
-    bool isCirclePressed = false;
-
-    bool isFullBucketPressed = false;
-
-    bool popBack = true;
+    DrawingType drawingType = DrawingType::None;
 
     std::vector<std::vector<int>> coordForRectangle;
+
 
 
     while (!isExitPressed)
     {
         ReadConsoleInput(hin, &InputRecord, 1, &Events); // зчитування 
         
-        if (InputRecord.Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED) // права кнопка
+        if (onRightButtonPressed(InputRecord))
         {
-            coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
-            coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
+            coord = InputRecord.Event.MouseEvent.dwMousePosition;
+
             coordForRectangle.clear();
+
             if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
             {// очистити use
                 clear();
                 createMenu();
                 isExitPressed = false;
 
-                isCleanerActive = false;
+                brushSize = BrushSize::Small;
 
-                isSmallSizePressed = true;
+                drawingType = DrawingType::None;
 
-                isMediumSizePressed = false;
-
-                isBigSizePressed = false;
-
-                isQuadroPressed = false;
-
-                isCirclePressed = false;
 
             }
-            //isQuadroPressed = false;
-            //std:e:cout << "right - X" << coord.X << ", Y = " << coord.Y << std::endl;
-            //break; 
         }
-        if (InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED) // ліва кнопка
+        if (onLeftButtonPressed(InputRecord))
         {
-            coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
-            coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            if (coord.Y > 30 && !isQuadroPressed && !isCirclePressed && !isFullBucketPressed)
+            coord = InputRecord.Event.MouseEvent.dwMousePosition;
+
+            if (coord.Y > 30 && !(drawingType == DrawingType::Quadro) && !(drawingType == DrawingType::Circle) && !(drawingType == DrawingType::FullBucket))
             {// заборона малювати на менюшці
-                if (!isCleanerActive)
+                if (!(drawingType == DrawingType::Cleaner))
                 {
-                    if (isSmallSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1 , coord.X + 1 ,"0");
-                    }
-                    if (isMediumSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "00");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "00");
-                        printToCoordinates(coord.Y, coord.X, "00");
-                    }
-                    if (isBigSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 2, coord.X + 2, "0000");
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "0000");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "0000");
-                        printToCoordinates(coord.Y - 2, coord.X - 2, "0000");
-                        printToCoordinates(coord.Y, coord.X, "0000");
-                    }
+                    draw(brushSize, coord, "0");
                     
                 }
                 else
                 {// cleaner mode
-                    if (isSmallSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, " ");
-                    }
-                    if (isMediumSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "  ");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "  ");
-                        printToCoordinates(coord.Y, coord.X, "  ");
-                    }
-                    if (isBigSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 2, coord.X + 2, "    ");
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "    ");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "    ");
-                        printToCoordinates(coord.Y - 2, coord.X - 2, "    ");
-                        printToCoordinates(coord.Y, coord.X, "    ");
-                    }
+                    draw(brushSize, coord, " ");
                 }
                 
             }
-            else if (coord.Y > 30 && isQuadroPressed && !isCirclePressed)
+            else if (coord.Y > 30 && (drawingType == DrawingType::Quadro) && !(drawingType == DrawingType::Circle))
             {
-                std::vector<int> temp;
-                temp.push_back(coord.X + 1);
-                temp.push_back(coord.Y + 1);
-                coordForRectangle.push_back(temp);
+                coordForRectangle.push_back({ coord.X + 1 ,coord.Y + 1 });
             }
-            else if (coord.Y > 30 && !isQuadroPressed && isCirclePressed)
+            else if (coord.Y > 30 && !(drawingType == DrawingType::Quadro) && (drawingType == DrawingType::Circle))
             {
-                std::vector<int> temp;
-                temp.push_back(coord.X + 1);
-                temp.push_back(coord.Y + 1);
-                coordForRectangle.push_back(temp);
+                coordForRectangle.push_back({ coord.X + 1 ,coord.Y + 1 });
             }
             if (coord.Y <= 5 && coord.Y >= 4 && coord.X >= 512 && coord.X <= 514)
             {// зміна на маленький розміру курсора
-                isSmallSizePressed = true;
-                isMediumSizePressed = false;
-                isBigSizePressed = false;
+                brushSize = BrushSize::Small;
             }
             if (coord.Y <= 10 && coord.Y >= 8 && coord.X >= 511 && coord.X <= 515)
             {// зміна на середній розміру курсора
-                isSmallSizePressed = false;
-                isMediumSizePressed = true;
-                isBigSizePressed = false;
+                brushSize = BrushSize::Medium;
             }
             if (coord.Y <= 16 && coord.Y >= 13 && coord.X >= 510 && coord.X <= 516)
             {// зміна на великий розміру курсора
-                isSmallSizePressed = false;
-                isMediumSizePressed = false;
-                isBigSizePressed = true;
+                brushSize = BrushSize::Big;
             }
             if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 607 && coord.X <= 617)
             {// вихід
@@ -227,35 +193,35 @@ int main(int argc, char* argv[])
             }
             if (coord.Y <= 10 && coord.Y >= 4 && coord.X >= 402 && coord.X <= 417)
             {// малювати квадратом
-                if (isQuadroPressed)
+                if (!(drawingType == DrawingType::Quadro))
                 {
-                    isQuadroPressed = false;
+                    drawingType = DrawingType::Quadro;
                 }
                 else
                 {
-                    isQuadroPressed = true;
+                    drawingType = DrawingType::None;
                 }
             }
             if (coord.Y <= 10 && coord.Y >= 5 && coord.X >= 373 && coord.X <= 385)
             {// малювати коло
-                if (isCirclePressed)
+                if (!(drawingType == DrawingType::Circle))
                 {
-                    isCirclePressed = false;
+                    drawingType = DrawingType::Circle;
                 }
                 else
                 {
-                    isCirclePressed = true;
+                    drawingType = DrawingType::None;
                 }
             }
             if (coord.Y <= 9 && coord.Y >= 4 && coord.X >= 202 && coord.X <= 213)
             {// заливка
-                if (isFullBucketPressed)
+                if (!(drawingType == DrawingType::FullBucket))
                 {
-                    isFullBucketPressed = false;
+                    drawingType = DrawingType::FullBucket;
                 }
                 else
                 {
-                    isFullBucketPressed = true;
+                    drawingType = DrawingType::None;
                 }
             }
             if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 572 && coord.X <= 577)
@@ -284,28 +250,29 @@ int main(int argc, char* argv[])
             }
             if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 542 && coord.X <= 547)
             {// червоний колір
-                if (isCleanerActive)
+                if (!(drawingType == DrawingType::Cleaner))
                 {
-                    isCleanerActive = false;
+                    drawingType = DrawingType::Cleaner;
                 }
-                else 
+                else
                 {
-                    isCleanerActive = true;
+                    drawingType = DrawingType::None;
                 }
-
             }
-
-            //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
+#ifdef SEE_COORDS
+            std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
+#endif // DEBUG
+ 
         }
-        if (isQuadroPressed && !isCirclePressed)
+        if (drawingType == DrawingType::Quadro && !(drawingType == DrawingType::Circle))
         {
             drawRectangle(coordForRectangle);
         }
-        if (isCirclePressed)
+        if (drawingType == DrawingType::Circle)
         {
             drawCircle(coordForRectangle);
         }
-        if (isFullBucketPressed && coord.Y >30)
+        if (drawingType == DrawingType::FullBucket && coord.Y >30)
         {
             
             bucketAll(coord.X,coord.Y - 1);

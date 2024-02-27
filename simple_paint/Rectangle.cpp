@@ -1,8 +1,8 @@
 #include "Rectangle.h"
 
-void drawRectangle(std::vector<std::vector<int>>& coordForRectangle)
+void drawRectangle(const std::vector<std::vector<int>>& coordForRectangle)
 {
-    if (coordForRectangle.size() == 0)
+    if (coordForRectangle.empty())
     {
         return;
     }

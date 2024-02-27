@@ -1,8 +1,8 @@
 #include "Circle.h"
 
-void drawCircle(std::vector<std::vector<int>>& coordForRectangle)
+void drawCircle(const std::vector<std::vector<int>>& coordForRectangle)
 {
-    if (coordForRectangle.size() == 0)
+    if (coordForRectangle.empty())
     {
         return;
     }

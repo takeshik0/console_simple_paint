@@ -2,4 +2,4 @@
 #include<vector>
 #include"Tools.h"
 
-void drawCircle(std::vector<std::vector<int>>& coordForRectangle);
+void drawCircle(const std::vector<std::vector<int>>& coordForRectangle);

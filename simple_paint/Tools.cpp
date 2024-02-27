@@ -31,6 +31,10 @@ void makeFullScreanConsole()
     ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 }
 
+void printToCoordinates(int x, int y, std::string_view value)
+{
+    std::cout << std::format("\033[{};{}H{}", x, y, value);
+}
 
 
 void consoleSelectionBlock(HANDLE hin)
