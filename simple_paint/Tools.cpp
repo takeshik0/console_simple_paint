@@ -1,6 +1,7 @@
 #include "Tools.h"
 #include <iostream>
 
+
 void removeScroll()
 {
     CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
@@ -48,4 +49,11 @@ void consoleSelectionBlock(HANDLE hin)
 void clear() {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     std::cout << "\x1B[2J\x1B[H";
+}
+
+
+bool RectangleOf::contains(COORD point)
+{
+    return (point.X >= leftUpper.X && point.X <= rightBottom.X) && (point.Y >= leftUpper.Y && point.Y <= rightBottom.Y);
+
 }

@@ -27,17 +27,7 @@ enum class DrawingType
     None, Cleaner, Circle, Quadro, FullBucket
 };
 
-struct RectangleOf 
-{
-    // Прямокутник задається лівою верхньою координатою та правою нижньою.
-    COORD leftUpper, rightBottom;
-
-    bool contains(COORD point) {
-
-        return (point.X >= leftUpper.X && point.X <= rightBottom.X) && (point.Y >= leftUpper.Y && point.Y <= rightBottom.Y);
-    };
-};
-
+//треба переробити
 void bucketAll(short x, short y)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -70,7 +60,7 @@ void bucketAll(short x, short y)
     printToCoordinates(y, x + 1, "0");
     printToCoordinates(y + 1, x, "0");
 
-}
+} //треба переробити
 
 void draw(BrushSize &brushSize, COORD coords, std::string whatToDraw)
 {
