@@ -1,63 +1,72 @@
 #include "Menu.h"
+#include <iostream>
 
+bool RectangleOf::contains(COORD point) const
+{
+    return (point.X >= startPoint.X && point.X <= endPoint.X) && (point.Y >= startPoint.Y && point.Y <= endPoint.Y);
 
-RectangleOf redColor{
-    .startPoint = {.X = 552, .Y = 3,},
-    .endPoint = {.X = 557, .Y = 6}
-};
-RectangleOf greenColor{
-    .startPoint = {.X = 562, .Y = 3,},
-    .endPoint = {.X = 567, .Y = 6}
-};
-RectangleOf blueColor{
-    .startPoint = {.X = 572, .Y = 3,},
-    .endPoint = {.X = 577, .Y = 6}
-};
-RectangleOf whiteColor{
-   .startPoint = {.X = 552, .Y = 8,},
-   .endPoint = {.X = 557, .Y = 11}
-};
-RectangleOf yellowColor{
-    .startPoint = {.X = 562, .Y = 8,},
-    .endPoint = {.X = 567, .Y = 11}
-};
-RectangleOf pinkColor{
-    .startPoint = {.X = 572, .Y = 8,},
-    .endPoint = {.X = 577, .Y = 11}
-};
-
-
-RectangleOf smallSizePen{
-    .startPoint = {.X = 492, .Y = 4},
-    .endPoint = {.X = 494, .Y = 5}
-};
-RectangleOf middleSizePen{
-     .startPoint = {.X = 491, .Y = 8},
-     .endPoint = {.X = 495, .Y = 10}
-};
-RectangleOf bigSizePen{
-     .startPoint = {.X = 490, .Y = 13},
-     .endPoint = {.X = 496, .Y = 16}
-};
-
-
-RectangleOf cleanButton{
-     .startPoint = {.X = 522, .Y = 3,},
-     .endPoint = {.X = 527, .Y = 6}
-};
-RectangleOf fillBucketButton{
-     .startPoint = {.X = 182, .Y = 3},
-     .endPoint = {.X = 192, .Y = 7}
-};
-RectangleOf sizeOfRectangle{
-    .startPoint = {.X = 382, .Y = 4,},
-    .endPoint = {.X = 397, .Y = 10}
-};
-
+}
 
 void createMenu()
 {
-    const int MAX_WIDTH = 613;
+
+    static const RectangleOf redColor{
+        .startPoint = {.X = 552, .Y = 3,},
+        .endPoint = {.X = 557, .Y = 6}
+    };
+    static const RectangleOf greenColor{
+        .startPoint = {.X = 562, .Y = 3,},
+        .endPoint = {.X = 567, .Y = 6}
+    };
+    static const RectangleOf blueColor{
+        .startPoint = {.X = 572, .Y = 3,},
+        .endPoint = {.X = 577, .Y = 6}
+    };
+    static const RectangleOf whiteColor{
+       .startPoint = {.X = 552, .Y = 8,},
+       .endPoint = {.X = 557, .Y = 11}
+    };
+    static const RectangleOf yellowColor{
+        .startPoint = {.X = 562, .Y = 8,},
+        .endPoint = {.X = 567, .Y = 11}
+    };
+    static const RectangleOf pinkColor{
+        .startPoint = {.X = 572, .Y = 8,},
+        .endPoint = {.X = 577, .Y = 11}
+    };
+
+
+    static const RectangleOf smallSizePen{
+        .startPoint = {.X = 532, .Y = 4},
+        .endPoint = {.X = 534, .Y = 5}
+    };
+    static const RectangleOf middleSizePen{
+         .startPoint = {.X = 531, .Y = 8},
+         .endPoint = {.X = 535, .Y = 10}
+    };
+    static const RectangleOf bigSizePen{
+         .startPoint = {.X = 530, .Y = 13},
+         .endPoint = {.X = 536, .Y = 16}
+    };
+
+    static const RectangleOf clearButton{
+        .startPoint = {.X = 10, .Y = 2},
+        .endPoint = {.X = 21, .Y = 11}
+    };
+    static const RectangleOf cleanButton{
+         .startPoint = {.X = 542, .Y = 3,},
+         .endPoint = {.X = 547, .Y = 6}
+    };
+    static const RectangleOf fillBucketButton{
+         .startPoint = {.X = 202, .Y = 3},
+         .endPoint = {.X = 212, .Y = 7}
+    };
+    static const RectangleOf sizeOfRectangle{
+        .startPoint = {.X = 412, .Y = 4,},
+        .endPoint = {.X = 427, .Y = 10}
+    };
+
+    const int MAX_WIDTH = 633;
     const int MENU_SIZE = 15;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 10);//скидуємо до дефолт зеленого
@@ -67,6 +76,7 @@ void createMenu()
         {
 
             std::cout << "\n";
+            
             std::cout << "            CCCCCC  ";
 
             COORD menuCoords{ .X = 0, .Y = 3 };
@@ -597,7 +607,7 @@ void createMenu()
         }
         std::cout << "\n";
     }
-    for (int i = 0; i < MAX_WIDTH + 27; i++)
+    for (int i = 0; i < MAX_WIDTH + 7; i++)
     {
         std::cout << "|";
     }

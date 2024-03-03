@@ -8,8 +8,10 @@
 *Debug
 
 # User Settings
-*.vsxproj.
+*simple_paint.vsxproj.
+*simple_paint.vsxproj.
 *.vsxproj
+*.vsxproj.
 *.vs
 
 # Compiled Object files
