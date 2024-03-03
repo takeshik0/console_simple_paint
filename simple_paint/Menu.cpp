@@ -1,10 +1,62 @@
 #include "Menu.h"
-//ох зря ти сюди поліз
-// це крінж
+
+
+RectangleOf redColor{
+    .startPoint = {.X = 552, .Y = 3,},
+    .endPoint = {.X = 557, .Y = 6}
+};
+RectangleOf greenColor{
+    .startPoint = {.X = 562, .Y = 3,},
+    .endPoint = {.X = 567, .Y = 6}
+};
+RectangleOf blueColor{
+    .startPoint = {.X = 572, .Y = 3,},
+    .endPoint = {.X = 577, .Y = 6}
+};
+RectangleOf whiteColor{
+   .startPoint = {.X = 552, .Y = 8,},
+   .endPoint = {.X = 557, .Y = 11}
+};
+RectangleOf yellowColor{
+    .startPoint = {.X = 562, .Y = 8,},
+    .endPoint = {.X = 567, .Y = 11}
+};
+RectangleOf pinkColor{
+    .startPoint = {.X = 572, .Y = 8,},
+    .endPoint = {.X = 577, .Y = 11}
+};
+
+
+RectangleOf smallSizePen{
+    .startPoint = {.X = 492, .Y = 4},
+    .endPoint = {.X = 494, .Y = 5}
+};
+RectangleOf middleSizePen{
+     .startPoint = {.X = 491, .Y = 8},
+     .endPoint = {.X = 495, .Y = 10}
+};
+RectangleOf bigSizePen{
+     .startPoint = {.X = 490, .Y = 13},
+     .endPoint = {.X = 496, .Y = 16}
+};
+
+
+RectangleOf cleanButton{
+     .startPoint = {.X = 522, .Y = 3,},
+     .endPoint = {.X = 527, .Y = 6}
+};
+RectangleOf fillBucketButton{
+     .startPoint = {.X = 182, .Y = 3},
+     .endPoint = {.X = 192, .Y = 7}
+};
+RectangleOf sizeOfRectangle{
+    .startPoint = {.X = 382, .Y = 4,},
+    .endPoint = {.X = 397, .Y = 10}
+};
+
 
 void createMenu()
 {
-    //вже не MAX_WIDTH, просто я не придумав нічо іншого ніж просто замінювати пробіли менюшки на знаки
     const int MAX_WIDTH = 613;
     const int MENU_SIZE = 15;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -19,22 +71,6 @@ void createMenu()
 
             COORD menuCoords{ .X = 0, .Y = 3 };
 
-            RectangleOf cleanButton{
-                .leftUpper = {.X = 522, .Y = 3,},
-                .rightBottom = {.X = 527, .Y = 6}
-            };
-            RectangleOf redColor{
-                .leftUpper = {.X = 532, .Y = 3,},
-                .rightBottom = {.X = 537, .Y = 6}
-            };
-            RectangleOf greenColor{
-                .leftUpper = {.X = 542, .Y = 3,},
-                .rightBottom = {.X = 547, .Y = 6}
-            };
-            RectangleOf blueColor{
-                .leftUpper = {.X = 552, .Y = 3,},
-                .rightBottom = {.X = 557, .Y = 6}
-            };
             for (int i = 0; i < MAX_WIDTH - 26; i++)
             {
                 menuCoords.X = i;
@@ -75,23 +111,11 @@ void createMenu()
             std::cout << "          CC      CC";
 
             menuCoords.Y++;
-            
-            RectangleOf fullBucketButton{
-                .leftUpper = {.X = 182, .Y = 3},
-                .rightBottom = {.X = 192, .Y = 7}
-            };
-            RectangleOf sizeOfRectangle{
-                .leftUpper = {.X = 382, .Y = 4,},
-                .rightBottom = {.X = 397, .Y = 10}
-            };
-            RectangleOf smallSizePen{
-                .leftUpper = {.X = 492, .Y = 4},
-                .rightBottom = {.X = 494, .Y = 5}
-            };
+
             for (int i = 0; i < MAX_WIDTH - 25; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords)) 
+                if (fillBucketButton.contains(menuCoords)) 
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -149,7 +173,7 @@ void createMenu()
             for (int i = 0; i < MAX_WIDTH - 24; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords))
+                if (fillBucketButton.contains(menuCoords))
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -213,7 +237,7 @@ void createMenu()
             for (int i = 0; i < MAX_WIDTH - 23; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords))
+                if (fillBucketButton.contains(menuCoords))
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -271,7 +295,7 @@ void createMenu()
             for (int i = 0; i < MAX_WIDTH - 22; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords))
+                if (fillBucketButton.contains(menuCoords))
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -297,27 +321,11 @@ void createMenu()
             std::cout << "\n";
             std::cout << "          CC        ";
 
-            RectangleOf middleSizePen{
-                .leftUpper = {.X = 491, .Y = 8},
-                .rightBottom = {.X = 495, .Y = 10}
-            };
-            RectangleOf whiteColor{
-               .leftUpper = {.X = 532, .Y = 8,},
-               .rightBottom = {.X = 537, .Y = 11}
-            };
-            RectangleOf yellowColor{
-                .leftUpper = {.X = 542, .Y = 8,},
-                .rightBottom = {.X = 547, .Y = 11}
-            };
-            RectangleOf pinkColor{
-                .leftUpper = {.X = 552, .Y = 8,},
-                .rightBottom = {.X = 557, .Y = 11}
-            };
             menuCoords.Y++;
             for (int i = 0; i < MAX_WIDTH - 23; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords))
+                if (fillBucketButton.contains(menuCoords))
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -375,7 +383,7 @@ void createMenu()
             for (int i = 0; i < MAX_WIDTH - 24; i++)
             {
                 menuCoords.X = i;
-                if (fullBucketButton.contains(menuCoords))
+                if (fillBucketButton.contains(menuCoords))
                 {// заливка
                     SetConsoleTextAttribute(hConsole, 11);
                     std::cout << "/";
@@ -531,10 +539,6 @@ void createMenu()
             std::cout << "            CCCCCC  ";
             std::cout << "\n";
             std::cout << "                    ";
-            RectangleOf bigSizePen{
-                .leftUpper = {.X = 490, .Y = 13},
-                .rightBottom = {.X = 496, .Y = 16}
-            };
             menuCoords.Y++;
             for (int i = 0; i < MAX_WIDTH - 26; i++)
             {

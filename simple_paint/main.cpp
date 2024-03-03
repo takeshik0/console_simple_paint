@@ -6,7 +6,10 @@
 #include "Rectangle.h"
 #include "Circle.h"
 
+
 //#define DISPLAY_COORDS
+
+constexpr char FILLED_CELL = '0';
 
 bool onRightButtonPressed (INPUT_RECORD InputRecord)
 {
@@ -22,9 +25,9 @@ enum class BrushSize
     Small, Medium, Big
 };
 
-enum class DrawingType 
+enum class BrushType 
 {
-    None, Cleaner, Circle, Quadro, FullBucket
+    None, Cleaner, Circle, Rectangle, FillBucket
 };
 
 //треба переробити
@@ -62,32 +65,37 @@ void bucketAll(short x, short y)
 
 } //треба переробити
 
-void draw(BrushSize &brushSize, COORD coords, std::string whatToDraw)
+void draw(BrushSize brushSize, COORD coords,const std::string whatToDraw)
 {
-    if (brushSize == BrushSize::Small)
+    std::string brushWidth;
+    switch (brushSize)
     {
+    case BrushSize::Small:
         printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
-    }
-    if (brushSize == BrushSize::Medium)
-    {
-        printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw + whatToDraw);
-        printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw + whatToDraw);
-        printToCoordinates(coords.Y, coords.X, whatToDraw + whatToDraw);
-    }
-    if (brushSize == BrushSize::Big)
-    {
-        printToCoordinates(coords.Y + 2, coords.X + 2, whatToDraw + whatToDraw + whatToDraw + whatToDraw);//не думаю що це правильно
-        printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
-        printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
-        printToCoordinates(coords.Y - 2, coords.X - 2, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
-        printToCoordinates(coords.Y, coords.X, whatToDraw + whatToDraw + whatToDraw + whatToDraw);
+        break;
+    case BrushSize::Medium:
+        brushWidth = whatToDraw + whatToDraw;
+        printToCoordinates(coords.Y + 1, coords.X + 1, brushWidth);
+        printToCoordinates(coords.Y - 1, coords.X - 1, brushWidth);
+        printToCoordinates(coords.Y, coords.X, brushWidth);
+        break;
+    case BrushSize::Big:
+        brushWidth = whatToDraw + whatToDraw + whatToDraw + whatToDraw;
+        printToCoordinates(coords.Y + 2, coords.X + 2, brushWidth);
+        printToCoordinates(coords.Y + 1, coords.X + 1, brushWidth);
+        printToCoordinates(coords.Y - 1, coords.X - 1, brushWidth);
+        printToCoordinates(coords.Y - 2, coords.X - 2, brushWidth);
+        printToCoordinates(coords.Y, coords.X, brushWidth);
+        break;
+    default:
+        break;
     }
 }
 
 
 int main(int argc, char* argv[])
 {
-    makeFullScreanConsole();
+    makeFullScreenConsole();
     
     removeScroll();//видалено полосу прокрутки
     
@@ -115,7 +123,7 @@ int main(int argc, char* argv[])
 
     BrushSize brushSize = BrushSize::Small;
 
-    DrawingType drawingType = DrawingType::None;
+    BrushType drawingType = BrushType::None;
 
     bool startOfRectangleSet = false;
 
@@ -135,16 +143,16 @@ int main(int argc, char* argv[])
         {
             coords = InputRecord.Event.MouseEvent.dwMousePosition;
 
-            leftUpper.X = 0, leftUpper.Y = 0 ;
-            rightBottom.X = 0, rightBottom.Y = 0 ;
+            leftUpper = { 0,0 };
+            rightBottom = { 0,0 };
 
             startOfRectangleSet = false;
 
             startOfCircleSet = false;
 
             RectangleOf clearButton{
-                .leftUpper = {.X = 10, .Y = 2},
-                .rightBottom = {.X = 21, .Y = 11}
+                .startPoint = {.X = 10, .Y = 2},
+                .endPoint = {.X = 21, .Y = 11}
             };
             if (clearButton.contains(coords))
             {// очистити все
@@ -155,7 +163,7 @@ int main(int argc, char* argv[])
 
                 brushSize = BrushSize::Small;
 
-                drawingType = DrawingType::None;
+                drawingType = BrushType::None;
 
                 startOfRectangleSet = false;
 
@@ -167,39 +175,42 @@ int main(int argc, char* argv[])
         {
             coords = InputRecord.Event.MouseEvent.dwMousePosition;
 
-            if (coords.Y > 30 && !(drawingType == DrawingType::Quadro) && !(drawingType == DrawingType::Circle) && !(drawingType == DrawingType::FullBucket))
-            {// заборона малювати на менюшці
-                if (!(drawingType == DrawingType::Cleaner))
+            if (const bool isCanvasPressed = coords.Y > 30; isCanvasPressed)
+            {
+                switch (drawingType)
                 {
+                case BrushType::None:
                     draw(brushSize, coords, "0");
-                    
-                }
-                else
-                {// cleaner mode
+                    break;
+                case BrushType::Cleaner: {
                     draw(brushSize, coords, " ");
+                }break;
+                case BrushType::Circle: {
+                    if (!startOfCircleSet) {
+                        leftUpper = coords;
+                        startOfCircleSet = true;
+                    }
+                    rightBottom = coords;
+                    drawCircle(leftUpper, rightBottom);
+                }break;
+                case BrushType::Rectangle:
+                    if (!startOfRectangleSet) {
+                        leftUpper = coords;
+                        startOfRectangleSet = true;
+                    }
+                    rightBottom = coords;
+                    drawRectangle(leftUpper, rightBottom);
+                    break;
+                case BrushType::FillBucket:
+                    bucketAll(coords.X, coords.Y - 1);
+                    break;
+                default: 
+                    break;
                 }
-                
             }
-            else if (coords.Y > 30 && (drawingType == DrawingType::Quadro) && !(drawingType == DrawingType::Circle))
-            {
-                if (!startOfRectangleSet){
-                    leftUpper = coords;
-                    startOfRectangleSet = true;
-                }
-                rightBottom = coords;
-            }
-            else if (coords.Y > 30 && !(drawingType == DrawingType::Quadro) && (drawingType == DrawingType::Circle))
-            {
-                if (!startOfCircleSet) {
-                    leftUpper = coords;
-                    startOfCircleSet = true;
-                }
-                rightBottom = coords;
-            }
-
             RectangleOf smallSizePen{
-                .leftUpper = {.X = 512, .Y = 4},
-                .rightBottom = {.X = 514, .Y = 5}
+                .startPoint = {.X = 512, .Y = 4},
+                .endPoint = {.X = 514, .Y = 5}
             };
 
             if (smallSizePen.contains(coords))
@@ -208,8 +219,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf middleSizePen{
-                .leftUpper = {.X = 511, .Y = 8},
-                .rightBottom = {.X = 515, .Y = 10}
+                .startPoint = {.X = 511, .Y = 8},
+                .endPoint = {.X = 515, .Y = 10}
             };
             if (middleSizePen.contains(coords))
             {// зміна на середній розміру курсора
@@ -217,8 +228,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf bigSizePen{
-                .leftUpper = {.X = 510, .Y = 13},
-                .rightBottom = {.X = 516, .Y = 16}
+                .startPoint = {.X = 510, .Y = 13},
+                .endPoint = {.X = 516, .Y = 16}
             };
             if (bigSizePen.contains(coords))
             {// зміна на великий розміру курсора
@@ -226,16 +237,16 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf exitButton{
-                .leftUpper = {.X = 607, .Y = 2},
-                .rightBottom = {.X = 617, .Y = 11}
+                .startPoint = {.X = 607, .Y = 2},
+                .endPoint = {.X = 617, .Y = 11}
             };
             if (exitButton.contains(coords))
             {// вихід
                 isExitPressed = true;
             }
             RectangleOf clearButton{
-                .leftUpper = {.X = 10, .Y = 2},
-                .rightBottom = {.X = 21, .Y = 11}
+                .startPoint = {.X = 10, .Y = 2},
+                .endPoint = {.X = 21, .Y = 11}
             };
             if (clearButton.contains(coords))
             {// очистити
@@ -244,56 +255,35 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf sizeOfRectangle{
-                .leftUpper = {.X = 402, .Y = 4,},
-                .rightBottom = {.X = 417, .Y = 10}
+                .startPoint = {.X = 402, .Y = 4,},
+                .endPoint = {.X = 417, .Y = 10}
             };
             if (sizeOfRectangle.contains(coords))
             {// малювати квадратом
-                if (!(drawingType == DrawingType::Quadro))
-                {
-                    drawingType = DrawingType::Quadro;
-                }
-                else
-                {
-                    drawingType = DrawingType::None;
-                }
+                drawingType = (drawingType == BrushType::Rectangle) ? BrushType::None : BrushType::Rectangle;
             }
 
             RectangleOf diameterOfCircle{
-                .leftUpper = {.X = 373, .Y = 5,},
-                .rightBottom = {.X = 385, .Y = 10}
+                .startPoint = {.X = 373, .Y = 5,},
+                .endPoint = {.X = 385, .Y = 10}
             };
             if (diameterOfCircle.contains(coords))
             {// малювати коло
-                if (!(drawingType == DrawingType::Circle))
-                {
-                    drawingType = DrawingType::Circle; 
-                }
-                else
-                {
-                    drawingType = DrawingType::None;
-                }
+                drawingType = (drawingType == BrushType::Circle) ? BrushType::None : BrushType::Circle;
             }
             
             RectangleOf fullBucket{
-                .leftUpper = {.X = 202, .Y = 4,},
-                .rightBottom = {.X = 213, .Y = 9}
+                .startPoint = {.X = 202, .Y = 4,},
+                .endPoint = {.X = 213, .Y = 9}
             };
             if (fullBucket.contains(coords))
             {// заливка
-                if (!(drawingType == DrawingType::FullBucket))
-                {
-                    drawingType = DrawingType::FullBucket;
-                }
-                else
-                {
-                    drawingType = DrawingType::None;
-                }
+                drawingType = (drawingType == BrushType::FillBucket) ? BrushType::None : BrushType::FillBucket;
             }
 
             RectangleOf blueColor{
-                .leftUpper = {.X = 572, .Y = 3,},
-                .rightBottom = {.X = 577, .Y = 6}
+                .startPoint = {.X = 572, .Y = 3,},
+                .endPoint = {.X = 577, .Y = 6}
             };
             if (blueColor.contains(coords))
             {// синій колір
@@ -301,8 +291,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf greenColor{
-                .leftUpper = {.X = 562, .Y = 3,},
-                .rightBottom = {.X = 567, .Y = 6}
+                .startPoint = {.X = 562, .Y = 3,},
+                .endPoint = {.X = 567, .Y = 6}
             };
             if (greenColor.contains(coords))
             {// зелений колір
@@ -310,8 +300,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf redColor{
-                .leftUpper = {.X = 552, .Y = 3,},
-                .rightBottom = {.X = 557, .Y = 6}
+                .startPoint = {.X = 552, .Y = 3,},
+                .endPoint = {.X = 557, .Y = 6}
             };
             if (redColor.contains(coords))
             {// червоний колір
@@ -319,8 +309,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf whiteColor{
-                .leftUpper = {.X = 552, .Y = 8,},
-                .rightBottom = {.X = 557, .Y = 11}
+                .startPoint = {.X = 552, .Y = 8,},
+                .endPoint = {.X = 557, .Y = 11}
             };
             if (whiteColor.contains(coords))
             {// білий колір
@@ -328,8 +318,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf yellowColor{
-                .leftUpper = {.X = 562, .Y = 8,},
-                .rightBottom = {.X = 567, .Y = 11}
+                .startPoint = {.X = 562, .Y = 8,},
+                .endPoint = {.X = 567, .Y = 11}
             };
             if (yellowColor.contains(coords))
             {// жовтий колір
@@ -337,8 +327,8 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf pinkColor{
-                .leftUpper = {.X = 572, .Y = 8,},
-                .rightBottom = {.X = 577, .Y = 11}
+                .startPoint = {.X = 572, .Y = 8,},
+                .endPoint = {.X = 577, .Y = 11}
             };
             if(pinkColor.contains(coords))
             {// pink колір
@@ -346,37 +336,17 @@ int main(int argc, char* argv[])
             }
 
             RectangleOf cleanButton{
-                .leftUpper = {.X = 542, .Y = 3,},
-                .rightBottom = {.X = 547, .Y = 6}
+                .startPoint = {.X = 542, .Y = 3,},
+                .endPoint = {.X = 547, .Y = 6}
             };
             if (cleanButton.contains(coords))
             {// cleaner
-                if (!(drawingType == DrawingType::Cleaner))
-                {
-                    drawingType = DrawingType::Cleaner;
-                }
-                else
-                {
-                    drawingType = DrawingType::None;
-                }
+                drawingType = (drawingType == BrushType::Cleaner) ? BrushType::None : BrushType::Cleaner;
             }
 #ifdef DISPLAY_COORDS
             std::cout << "left - X" << coords.X << ", Y = " << coords.Y << std::endl;
 #endif // DISPLAY_COORDS
  
-        }
-        if (coords.Y > 30 && drawingType == DrawingType::Quadro && !(drawingType == DrawingType::Circle))
-        { 
-            drawRectangle(leftUpper,rightBottom);
-        }
-        if (drawingType == DrawingType::Circle)
-        {
-            drawCircle(leftUpper, rightBottom);
-        }
-        if (drawingType == DrawingType::FullBucket && coords.Y >30)
-        {
-            
-            bucketAll(coords.X,coords.Y - 1);
         }
     }
 

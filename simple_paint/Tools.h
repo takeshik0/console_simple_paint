@@ -5,11 +5,12 @@
 struct RectangleOf
 {
     // Прямокутник задається лівою верхньою координатою та правою нижньою.
-    COORD leftUpper, rightBottom;
+    COORD startPoint, endPoint;
 
     bool contains(COORD point);
 };
-void makeFullScreanConsole();
+
+void makeFullScreenConsole();
 void removeScroll();
 void consoleSelectionBlock(HANDLE hin);
 void printToCoordinates(int x, int y, std::string_view value);

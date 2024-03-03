@@ -27,7 +27,7 @@ void removeScroll()
     SetConsoleScreenBufferSize(hConsole, new_screen_buffer_size);
 }
 
-void makeFullScreanConsole()
+void makeFullScreenConsole()
 {
     ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 }
@@ -54,6 +54,6 @@ void clear() {
 
 bool RectangleOf::contains(COORD point)
 {
-    return (point.X >= leftUpper.X && point.X <= rightBottom.X) && (point.Y >= leftUpper.Y && point.Y <= rightBottom.Y);
+    return (point.X >= startPoint.X && point.X <= endPoint.X) && (point.Y >= startPoint.Y && point.Y <= endPoint.Y);
 
 }
