@@ -39,38 +39,13 @@ public:
                 }
             }
         }
+        SetConsoleTextAttribute(hConsole, Color::Green);
     }
     
 };
 
 void createMenu()
 {
-     
-
-    static const RectangleOf redColor{
-        .startPoint = {.X = 552, .Y = 3,}, 
-        .endPoint = {.X = 557, .Y = 6}
-    };
-    static const RectangleOf greenColor{
-        .startPoint = {.X = 562, .Y = 3,},
-        .endPoint = {.X = 567, .Y = 6}
-    };
-    static const RectangleOf blueColor{
-        .startPoint = {.X = 572, .Y = 3,},
-        .endPoint = {.X = 577, .Y = 6}
-    };
-    static const RectangleOf whiteColor{
-       .startPoint = {.X = 552, .Y = 8,},
-       .endPoint = {.X = 557, .Y = 11}
-    };
-    static const RectangleOf yellowColor{
-        .startPoint = {.X = 562, .Y = 8,},
-        .endPoint = {.X = 567, .Y = 11}
-    };
-    static const RectangleOf pinkColor{
-        .startPoint = {.X = 572, .Y = 8,},
-        .endPoint = {.X = 577, .Y = 11}
-    };
 
 
     static const RectangleOf smallSizePen{
@@ -103,6 +78,8 @@ void createMenu()
         .endPoint = {.X = 427, .Y = 10}
     };
 
+
+
     const int MAX_WIDTH = 633;
     const int MENU_SIZE = 15;
     
@@ -124,24 +101,6 @@ void createMenu()
                 if (cleanButton.contains(menuCoords))
                 {// пустий колір
                     SetConsoleTextAttribute(hConsole, 8);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (redColor.contains(menuCoords)) 
-                {//red
-                    SetConsoleTextAttribute(hConsole, 12);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (greenColor.contains(menuCoords)) 
-                {//green
-                    SetConsoleTextAttribute(hConsole, 10);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (blueColor.contains(menuCoords)) 
-                {//blue
-                    SetConsoleTextAttribute(hConsole, 9);
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
@@ -183,24 +142,6 @@ void createMenu()
                 else if (cleanButton.contains(menuCoords))
                 {// пустий колір
                     SetConsoleTextAttribute(hConsole, 8);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (redColor.contains(menuCoords)) 
-                {//red
-                    SetConsoleTextAttribute(hConsole, 12);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (greenColor.contains(menuCoords)) 
-                {//green
-                    SetConsoleTextAttribute(hConsole, 10);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (blueColor.contains(menuCoords)) 
-                {//blue
-                    SetConsoleTextAttribute(hConsole, 9);
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
@@ -250,24 +191,6 @@ void createMenu()
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
-                else if (redColor.contains(menuCoords))
-                {//red
-                    SetConsoleTextAttribute(hConsole, 12);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (greenColor.contains(menuCoords))
-                {//green
-                    SetConsoleTextAttribute(hConsole, 10);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (blueColor.contains(menuCoords))
-                {//blue
-                    SetConsoleTextAttribute(hConsole, 9);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
                 else { std::cout << " "; }
 
             }
@@ -305,24 +228,6 @@ void createMenu()
                 else if (cleanButton.contains(menuCoords))
                 {// пустий колір
                     SetConsoleTextAttribute(hConsole, 8);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (redColor.contains(menuCoords))
-                {//red
-                    SetConsoleTextAttribute(hConsole, 12);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (greenColor.contains(menuCoords))
-                {//green
-                    SetConsoleTextAttribute(hConsole, 10);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (blueColor.contains(menuCoords))
-                {//blue
-                    SetConsoleTextAttribute(hConsole, 9);
                     std::cout << "#";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
@@ -396,24 +301,6 @@ void createMenu()
                     std::cout << "&";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
-                else if (whiteColor.contains(menuCoords))
-                {//white
-                    SetConsoleTextAttribute(hConsole, 15);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (yellowColor.contains(menuCoords))
-                {//yellow
-                    SetConsoleTextAttribute(hConsole, 14);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (pinkColor.contains(menuCoords))
-                {//pink
-                    SetConsoleTextAttribute(hConsole, 13);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
                 else{std::cout << " ";}
                 
             }
@@ -454,24 +341,6 @@ void createMenu()
                     std::cout << "&";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
-                else if (whiteColor.contains(menuCoords))
-                {//white
-                    SetConsoleTextAttribute(hConsole, 15);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (yellowColor.contains(menuCoords))
-                {//yellow
-                    SetConsoleTextAttribute(hConsole, 14);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (pinkColor.contains(menuCoords))
-                {//pink
-                    SetConsoleTextAttribute(hConsole, 13);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
                 else { std::cout << " "; }
             }
             std::cout << "X";
@@ -504,24 +373,6 @@ void createMenu()
                     std::cout << "&";
                     SetConsoleTextAttribute(hConsole, 10);
                 }
-                else if (whiteColor.contains(menuCoords))
-                {//white
-                    SetConsoleTextAttribute(hConsole, 15);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (yellowColor.contains(menuCoords))
-                {//yellow
-                    SetConsoleTextAttribute(hConsole, 14);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (pinkColor.contains(menuCoords))
-                {//pink
-                    SetConsoleTextAttribute(hConsole, 13);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
                 else { std::cout << " "; }
             }
             std::cout << "X";
@@ -533,53 +384,11 @@ void createMenu()
             std::cout << "\n";
             std::cout << "           CC     CC";
             menuCoords.Y++;
-            for (int i = 0; i < MAX_WIDTH - 26; i++)
-            {
-                menuCoords.X = i;
-                 if (whiteColor.contains(menuCoords))
-                 {//white
-                     SetConsoleTextAttribute(hConsole, 15);
-                     std::cout << "#";
-                     SetConsoleTextAttribute(hConsole, 10);
-                }
-                 else if (yellowColor.contains(menuCoords))
-                 {//yellow
-                     SetConsoleTextAttribute(hConsole, 14);
-                     std::cout << "#";
-                     SetConsoleTextAttribute(hConsole, 10);
-                }
-                 else if (pinkColor.contains(menuCoords))
-                 {//pink
-                     SetConsoleTextAttribute(hConsole, 13);
-                     std::cout << "#";
-                     SetConsoleTextAttribute(hConsole, 10);
-                }
-                else { std::cout << " "; }
-            }
             std::cout << "X";
             menuCoords.Y++;
             for (int i = 0; i < 8; i++)
             {
-                menuCoords.X = i;
-                if (whiteColor.contains(menuCoords))
-                {//white
-                    SetConsoleTextAttribute(hConsole, 15);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (yellowColor.contains(menuCoords))
-                {//yellow
-                    SetConsoleTextAttribute(hConsole, 14);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else if (pinkColor.contains(menuCoords))
-                {//pink
-                    SetConsoleTextAttribute(hConsole, 13);
-                    std::cout << "#";
-                    SetConsoleTextAttribute(hConsole, 10);
-                }
-                else { std::cout << " "; }
+                std::cout << " ";
             }
             std::cout << "X";
             std::cout << "\n";
@@ -648,9 +457,12 @@ void createMenu()
     {
         std::cout << "|";
     }
+
+
     static const RectangleOf paletteCoord{
         .startPoint = {.X = 573, .Y = 4,},
         .endPoint = {.X = 578, .Y = 11}
     };
     Palette palette(paletteCoord);
+
 }
