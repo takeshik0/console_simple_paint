@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "Tools.h"
 
 
 struct RectangleOf
@@ -9,4 +10,6 @@ struct RectangleOf
 
     bool contains(COORD point) const;
 };
+
+
 void createMenu();

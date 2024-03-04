@@ -1,17 +1,54 @@
 #include "Menu.h"
 #include <iostream>
+//#include<array>
 
 bool RectangleOf::contains(COORD point) const
 {
     return (point.X >= startPoint.X && point.X <= endPoint.X) && (point.Y >= startPoint.Y && point.Y <= endPoint.Y);
-
 }
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+constexpr char FILLED_CELL = '#';
+class Palette {
+    static constexpr std::size_t ELEMENT_WIDTH = 6, ELEMENT_HEIGHT = 4;
+
+    enum Color {
+        Red = 12, Green = 10, Blue = 9, Pink = 13, Yellow, White
+    };
+
+    int fColors[6] = { Red, White, Green, Yellow, Blue, Pink };
+    RectangleOf fBorders;
+    //X = 552, Y = 3  X = 577, Y = 11
+public:
+    Palette(RectangleOf borders) : fBorders(borders) {
+        for (short paletteWidth = 0,spaceBetwColors = 0; paletteWidth < 6; paletteWidth +=2, spaceBetwColors += 10)
+        {
+            SetConsoleTextAttribute(hConsole, fColors[paletteWidth]);
+            short height = 0;
+            for (; height < ELEMENT_HEIGHT; height++) {
+                for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                    printToCoordinates(borders.startPoint.Y + height, borders.startPoint.X + width + spaceBetwColors, FILLED_CELL);
+                }
+            }
+            height++;//add space
+            
+            SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
+            for (; height <= ELEMENT_HEIGHT * 2; height++) {
+                for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                    printToCoordinates(borders.startPoint.Y + height, borders.startPoint.X + width + spaceBetwColors, FILLED_CELL);
+                }
+            }
+        }
+    }
+    
+};
 
 void createMenu()
 {
+     
 
     static const RectangleOf redColor{
-        .startPoint = {.X = 552, .Y = 3,},
+        .startPoint = {.X = 552, .Y = 3,}, 
         .endPoint = {.X = 557, .Y = 6}
     };
     static const RectangleOf greenColor{
@@ -68,7 +105,7 @@ void createMenu()
 
     const int MAX_WIDTH = 633;
     const int MENU_SIZE = 15;
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    
     SetConsoleTextAttribute(hConsole, 10);//скидуємо до дефолт зеленого
     for (int i = 0; i < MENU_SIZE; i++)
     {
@@ -611,4 +648,9 @@ void createMenu()
     {
         std::cout << "|";
     }
+    static const RectangleOf paletteCoord{
+        .startPoint = {.X = 573, .Y = 4,},
+        .endPoint = {.X = 578, .Y = 11}
+    };
+    Palette palette(paletteCoord);
 }

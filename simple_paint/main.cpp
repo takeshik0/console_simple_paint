@@ -102,6 +102,7 @@ private:
 };
 
 
+
 bool isRightButtonPressed (INPUT_RECORD InputRecord)
 {
     return InputRecord.Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED;
