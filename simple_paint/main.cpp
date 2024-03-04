@@ -49,13 +49,9 @@ static const RectangleOf clearButton{
     .endPoint = {.X = 21, .Y = 11}
 };
 static const RectangleOf cleanButton{
-     .startPoint = {.X = 542, .Y = 3,},
-     .endPoint = {.X = 547, .Y = 6}
+     .startPoint = {.X = 562, .Y = 3,},
+     .endPoint = {.X = 567, .Y = 6}
 };
-//static const RectangleOf fillBucketButton{
-//     .startPoint = {.X = 262, .Y = 3},
-//     .endPoint = {.X = 272, .Y = 7}
-//};
 static const RectangleOf sizeOfRectangle{
     .startPoint = {.X = 432, .Y = 4,},
     .endPoint = {.X = 447, .Y = 10}
@@ -101,6 +97,30 @@ private:
     Size fSize = Size::Small;
 };
 
+Brush brush;
+
+class Button
+{
+public:
+    RectangleOf fRectangle;
+
+    bool isClicked(COORD point) const {
+        return (point.X >= fRectangle.startPoint.X && point.X <= fRectangle.endPoint.X) && (point.Y >= fRectangle.startPoint.Y && point.Y <= fRectangle.endPoint.Y);
+    }
+    void onClick(Brush::Type whatToSwich)
+    {
+        brush.switchType(whatToSwich);
+    }
+
+private:
+
+};
+
+Button cleanerButton = { cleanButton };
+Button rectangleButton = { sizeOfRectangle };
+Button circleButton = { diameterOfCircle  };
+Button fillButton = { fillBucket };
+
 
 
 bool isRightButtonPressed (INPUT_RECORD InputRecord)
@@ -125,7 +145,7 @@ void fillerBucket(short x, short y)
     ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coords, &count);// танці з бубнами
     if (charInfo.Char.AsciiChar == FILLED_CELL)
     {
-        printToCoordinates(y, x, FILLED_CELL);
+        //printToCoordinates(y, x, FILLED_CELL);
         return;
     }
 
@@ -152,25 +172,25 @@ void draw(Brush brush, COORD coords,const char whatToDraw)
     switch (brush.getSize())
     {
     case Brush::Size::Small:
-        printToCoordinates(coords.Y + 1, coords.X + 1, FILLED_CELL);
+        printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
         break;
     case Brush::Size::Medium:
         for (int i = 0; i < 2; i++)
         {
-            printToCoordinates(coords.Y + 1, coords.X + 1, FILLED_CELL);
-            printToCoordinates(coords.Y - 1, coords.X - 1, FILLED_CELL);
-            printToCoordinates(coords.Y, coords.X, FILLED_CELL);
+            printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
+            printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw);
+            printToCoordinates(coords.Y, coords.X, whatToDraw);
             i == 1 ? coords.X -= 2 : coords.X++;
         }
         break;
     case Brush::Size::Big:
         for (int i = 0; i < 6; i++)
         {
-            printToCoordinates(coords.Y + 2, coords.X + 2, FILLED_CELL);
-            printToCoordinates(coords.Y + 1, coords.X + 1, FILLED_CELL);
-            printToCoordinates(coords.Y - 1, coords.X - 1, FILLED_CELL);
-            printToCoordinates(coords.Y - 2, coords.X - 2, FILLED_CELL);
-            printToCoordinates(coords.Y, coords.X, FILLED_CELL);
+            printToCoordinates(coords.Y + 2, coords.X + 2, whatToDraw);
+            printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
+            printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw);
+            printToCoordinates(coords.Y - 2, coords.X - 2, whatToDraw);
+            printToCoordinates(coords.Y, coords.X, whatToDraw);
             i == 3 ? coords.X -= 4 : coords.X++;
         }
         break;
@@ -216,7 +236,7 @@ int main()
     COORD endPoint{ .X = 0,.Y = 0 };
 
 
-    Brush brush;
+    
     while (!isExitPressed)
     {
         ReadConsoleInput(hin, &InputRecord, 1, &Events); // зчитування 
@@ -314,26 +334,25 @@ int main()
                 brush.setSize(Brush::Size::Big);
             }
 
-            if (cleanButton.contains(coords))
+            
+            if (cleanerButton.isClicked(coords))
             {// cleaner
-                brush.switchType(Brush::Type::Cleaner);
+                cleanerButton.onClick(Brush::Type::Cleaner);
             }
 
-
-
-            if (sizeOfRectangle.contains(coords))
-            {// малювати квадратом
-                brush.switchType(Brush::Type::Rectangle);
+            if (rectangleButton.isClicked(coords))
+            {
+                rectangleButton.onClick(Brush::Type::Rectangle);
             }
 
-            if (diameterOfCircle.contains(coords))
-            {// малювати коло
-                brush.switchType(Brush::Type::Circle);
+            if (circleButton.isClicked(coords))
+            {
+                circleButton.onClick(Brush::Type::Circle);
             }
 
-            if (fillBucket.contains(coords))
+            if (fillButton.isClicked(coords))
             {// заливка
-                brush.switchType(Brush::Type::FillBucket);
+                fillButton.onClick(Brush::Type::FillBucket);
             }
             
 
