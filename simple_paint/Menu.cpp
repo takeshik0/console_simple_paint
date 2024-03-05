@@ -1,47 +1,13 @@
 #include "Menu.h"
 #include <iostream>
 #include "GlobalVariables.h"
-//#include<array>
+#include<array>
+#include "Palette.h"
 
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 constexpr char FILLED_CELL = '#';
 
-class Palette {
-    static constexpr std::size_t ELEMENT_WIDTH = 6, ELEMENT_HEIGHT = 4;
-
-    enum Color {
-        Red = 12, Green = 10, Blue = 9, Pink = 13, Yellow, White
-    };
-
-    int fColors[6] = { Red, White, Green, Yellow, Blue, Pink };
-    RectangleOf fBorders;
-    //X = 552, Y = 3  X = 577, Y = 11
-public:
-    Palette(RectangleOf borders) : fBorders(borders) {
-        for (short paletteWidth = 0,spaceBetwColors = 0; paletteWidth < 6; paletteWidth +=2, spaceBetwColors += 10)
-        {
-            SetConsoleTextAttribute(hConsole, fColors[paletteWidth]);
-            short height = 0;
-            for (; height < ELEMENT_HEIGHT; height++) {
-                for (short width = 0; width < ELEMENT_WIDTH; width++) {
-                    printToCoordinates( borders.startPoint.X + width + spaceBetwColors,borders.startPoint.Y + height, FILLED_CELL);
-                }
-            }
-            height++;//add space
-            
-            SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
-            for (; height <= ELEMENT_HEIGHT * 2; height++) {
-                for (short width = 0; width < ELEMENT_WIDTH; width++) {
-                    printToCoordinates( borders.startPoint.X + width + spaceBetwColors,borders.startPoint.Y + height, FILLED_CELL);
-                }
-            }
-        }
-        SetConsoleTextAttribute(hConsole, Color::Green);
-    }
-    
-};
 //mistake create cuz COORD display x - 1, y - 1 coord
 const int MEASURE_MISTAKE = 1;
 
@@ -208,10 +174,6 @@ void createMenu()
     drawRectangleButton();
     drawBrushSizeButton();
     drawExitButton();
-    static const RectangleOf paletteCoord{
-        .startPoint = {.X = 573, .Y = 4,},
-        .endPoint = {.X = 578, .Y = 11}
-    };
-    Palette palette(paletteCoord);
+    Palette palette(paletteCoords);
 
 }

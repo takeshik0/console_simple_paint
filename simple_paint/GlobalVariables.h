@@ -1,13 +1,24 @@
 #pragma once
 #include "Windows.h"
 
+
 struct RectangleOf
 {
     // Прямокутник задається лівою верхньою координатою та правою нижньою.
     COORD startPoint, endPoint;
 
     bool contains(COORD point) const;
+
+    bool isNotValid(RectangleOf curr);
 };
+
+
+inline static const RectangleOf paletteCoords{
+        .startPoint = {.X = 573, .Y = 4,},
+        .endPoint = {.X = 578, .Y = 11}
+};
+
+
 
 inline static const RectangleOf redColor{
     .startPoint = {.X = 572, .Y = 3,},

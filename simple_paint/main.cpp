@@ -5,10 +5,13 @@
 #include "Tools.h"
 #include "Drawer.h"
 #include "GlobalVariables.h"
+#include "Palette.h"
 
 
 
 //#define DISPLAY_COORDS
+
+
 
 constexpr char FILLED_CELL = '0';
 
@@ -70,11 +73,9 @@ bool isLeftButtonPressed(INPUT_RECORD InputRecord)
     return InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED;
 }
 
-
 //треба переробити
 void fillerBucket(short x, short y)
 {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coords{ .X = x, .Y = y };
     DWORD count;
     CHAR_INFO charInfo;
@@ -137,7 +138,53 @@ void draw(Brush brush, COORD coords,const char whatToDraw)
     }
 }
 
+Palette::Palette(RectangleOf borders) : fBorders(borders) {
+    for (short paletteWidth = 0, spaceBetwColors = 0; paletteWidth < fColors.size(); paletteWidth += 2, spaceBetwColors += 10)
+    {
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth]);
+        short height = 0;
+        for (; height < ELEMENT_HEIGHT; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                printToCoordinates(borders.startPoint.X + width + spaceBetwColors, borders.startPoint.Y + height, FILLED_CELL);
+            }
+        }
+        height++;//add space
 
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
+        for (; height <= ELEMENT_HEIGHT * 2; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                printToCoordinates(borders.startPoint.X + width + spaceBetwColors, borders.startPoint.Y + height, FILLED_CELL);
+            }
+        }
+    }
+    SetConsoleTextAttribute(hConsole, Color::Green);
+}
+
+std::optional<Palette::Color> Palette::selectColor(COORD point)
+{
+    for (short paletteWidth = 0, spaceBetwColors = 0; paletteWidth < fColors.size(); paletteWidth += 2, spaceBetwColors += 10)
+    {
+        short height = 0;
+        for (; height < ELEMENT_HEIGHT; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                if (point.X == paletteCoords.startPoint.X + width + spaceBetwColors && point.Y == paletteCoords.startPoint.Y + height){
+                    return fColors[paletteWidth];
+                }
+            }
+        }
+        height++;//add space
+
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
+        for (; height <= ELEMENT_HEIGHT * 2; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                if (point.X == paletteCoords.startPoint.X + width + spaceBetwColors && point.Y == paletteCoords.startPoint.Y + height) {
+                    return fColors[paletteWidth + 1];
+                }
+            }
+        }
+    }
+    //return Palette::Color::Green;
+}
 
 int main()
 {
@@ -161,10 +208,9 @@ int main()
 
     SetConsoleMode(hin, ENABLE_MOUSE_INPUT);// дозволяємо mouse input
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// color change
 
 
-
+    Palette palette(paletteCoords);
 
     COORD startPoint{ .X = 0, .Y = 0 };
     COORD endPoint{ .X = 0,.Y = 0 };
@@ -293,38 +339,10 @@ int main()
                 fillButton.onClick(Brush::Type::FillBucket);
             }
             
-
-            if (blueColor.contains(coords))
-            {// синій колір
-                SetConsoleTextAttribute(hConsole, 9);
-            }
-
-
-            if (greenColor.contains(coords))
-            {// зелений колір
-                SetConsoleTextAttribute(hConsole, 10);
-            }
-
-
-            if (redColor.contains(coords))
-            {// червоний колір
-                SetConsoleTextAttribute(hConsole, 12);
-            }
-
-
-            if (whiteColor.contains(coords))
-            {// білий колір
-                SetConsoleTextAttribute(hConsole, 15);
-            }
-
-            if (yellowColor.contains(coords))
-            {// жовтий колір
-                SetConsoleTextAttribute(hConsole, 14);
-            }
-
-            if(pinkColor.contains(coords))
-            {// pink колір
-                SetConsoleTextAttribute(hConsole, 13);
+            if (coords.Y < 30) {
+                if (std::optional color = palette.selectColor(coords)) {
+                    SetConsoleTextAttribute(hConsole, static_cast<int>(color.value()));
+                }
             }
 
 #ifdef DISPLAY_COORDS

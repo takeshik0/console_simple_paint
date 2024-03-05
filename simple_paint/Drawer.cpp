@@ -1,19 +1,10 @@
 #include "Drawer.h"
 #include<cmath>
 
-int myMax(int a, int b) {
-    return (a > b) ? a : b;
-}
 
 void drawCircle(RectangleOf circle)
 {
-    if (circle.startPoint.X == 0 && circle.startPoint.Y == 0)
-    {
-        return;
-    }
-    bool isValid = circle.endPoint.X - circle.startPoint.X < 0 || circle.endPoint.Y - circle.startPoint.Y < 0;
-    if (isValid)
-    {
+    if (circle.isNotValid(circle)){
         return;
     }
     int centerX = (circle.startPoint.X + circle.endPoint.X) / 2;
@@ -33,39 +24,30 @@ void drawCircle(RectangleOf circle)
 
 void drawRectangle(RectangleOf rectangle)
 {
-    if (rectangle.startPoint.X == 0 && rectangle.startPoint.Y == 0)
-    {
+    if (rectangle.isNotValid(rectangle)) {
         return;
     }
-    // якщо не буде цього іфа, то програма, коли намагаються малювати не з правого кута в лівий, ламається, а з ним почати малювати інакше не можна
-    bool isValid = rectangle.endPoint.X - rectangle.startPoint.X < 0 || rectangle.endPoint.Y - rectangle.startPoint.Y < 0;
-    if (isValid)
+    int currX = rectangle.startPoint.X;
+    int currY = rectangle.startPoint.Y;
+    while (currY != rectangle.endPoint.Y)
     {
-        return;
+        currY++;
+        printToCoordinates( rectangle.startPoint.X,currY, '8');
     }
-    int currStartY = rectangle.startPoint.Y;
-    while (currStartY != rectangle.endPoint.Y)
+    while (currX != rectangle.endPoint.X)
     {
-        currStartY++;
-        printToCoordinates( rectangle.startPoint.X,currStartY, '8');
+        currX++;
+        printToCoordinates( currX,rectangle.startPoint.Y, '8');
     }
-    int currStartX = rectangle.startPoint.X;
-    while (currStartX != rectangle.endPoint.X)
+    while (currY != rectangle.startPoint.Y)
     {
-        currStartX++;
-        printToCoordinates( currStartX,rectangle.startPoint.Y, '8');
+        currY--;
+        printToCoordinates( rectangle.endPoint.X,currY, '8');
     }
-    int currEndY = rectangle.endPoint.Y;
-    while (currEndY != rectangle.startPoint.Y)
+    while (currX != rectangle.startPoint.X)
     {
-        currEndY--;
-        printToCoordinates( rectangle.endPoint.X,currEndY, '8');
-    }
-    int currEndX = rectangle.endPoint.X;
-    while (currEndX != rectangle.startPoint.X)
-    {
-        currEndX--;
-        printToCoordinates( currEndX,rectangle.endPoint.Y, '8');
+        currX--;
+        printToCoordinates( currX,rectangle.endPoint.Y, '8');
     }
     printToCoordinates(rectangle.endPoint.X,rectangle.endPoint.Y, '8');
 
