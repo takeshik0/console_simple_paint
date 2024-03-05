@@ -12,8 +12,8 @@ void drawCircle(RectangleOf circle)
     int radius = std::sqrt(std::pow(circle.endPoint.X - circle.startPoint.X, 2) + std::pow(circle.endPoint.Y - circle.startPoint.Y, 2)) / 2;
     
     // Виведення кола у консоль
-    for (int y = 0; y <= centerY + radius; ++y) {
-        for (int x = 0; x <= centerX + radius; ++x) {
+    for (int y = circle.startPoint.Y - radius; y <= centerY + radius; ++y) {
+        for (int x = circle.startPoint.X - radius; x <= centerX + radius; ++x) {
             // Формула кола (x - centerX)^2 + (y - centerY)^2 = radius^2
             if (std::pow(x - centerX, 2) + std::pow(y - centerY, 2) <= std::pow(radius, 2)) {
                 printToCoordinates( x,y, '8');
