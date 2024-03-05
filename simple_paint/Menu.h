@@ -2,14 +2,11 @@
 #include <Windows.h>
 #include "Tools.h"
 
-
-struct RectangleOf
-{
-    // Прямокутник задається лівою верхньою координатою та правою нижньою.
-    COORD startPoint, endPoint;
-
-    bool contains(COORD point) const;
-};
-
-
+void drawExitButton();
+void drawClearButton();
+void drawCircleButton();
+void drawCleanerButton();
+void drawFillBucketButton();
+void drawRectangleButton();
+void drawBrushSizeButton();
 void createMenu();

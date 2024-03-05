@@ -1,7 +1,7 @@
 #pragma once
-#include"Menu.h"
+#include"GlobalVariables.h"
 #include"Tools.h"
 
-void drawRectangle(RectangleOf Circle);
+void drawCircle(RectangleOf circle);
+void drawRectangle(RectangleOf rectangle);
 
-void drawCircle(RectangleOf Circle);

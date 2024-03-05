@@ -34,7 +34,7 @@ void makeFullScreenConsole()
 
 void printToCoordinates(int x, int y,const char value)
 {
-    std::cout << std::format("\033[{};{}H{}", x, y, value);
+    std::cout << std::format("\033[{};{}H{}", y, x, value);
 }
 
 

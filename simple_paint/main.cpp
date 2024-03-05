@@ -4,70 +4,8 @@
 #include "Menu.h"
 #include "Tools.h"
 #include "Drawer.h"
+#include "GlobalVariables.h"
 
-static const RectangleOf redColor{
-    .startPoint = {.X = 572, .Y = 3,},
-    .endPoint = {.X = 577, .Y = 6}
-};
-static const RectangleOf greenColor{
-    .startPoint = {.X = 582, .Y = 3,},
-    .endPoint = {.X = 587, .Y = 6}
-};
-static const RectangleOf blueColor{
-    .startPoint = {.X = 592, .Y = 3,},
-    .endPoint = {.X = 597, .Y = 6}
-};
-static const RectangleOf whiteColor{
-   .startPoint = {.X = 572, .Y = 8,},
-   .endPoint = {.X = 577, .Y = 11}
-};
-static const RectangleOf yellowColor{
-    .startPoint = {.X = 582, .Y = 8,},
-    .endPoint = {.X = 587, .Y = 11}
-};
-static const RectangleOf pinkColor{
-    .startPoint = {.X = 592, .Y = 8,},
-    .endPoint = {.X = 597, .Y = 11}
-};
-
-
-static const RectangleOf smallSizePen{
-    .startPoint = {.X = 552, .Y = 4},
-    .endPoint = {.X = 554, .Y = 5}
-};
-static const RectangleOf middleSizePen{
-     .startPoint = {.X = 551, .Y = 8},
-     .endPoint = {.X = 555, .Y = 10}
-};
-static const RectangleOf bigSizePen{
-     .startPoint = {.X = 550, .Y = 13},
-     .endPoint = {.X = 556, .Y = 16}
-};
-
-static const RectangleOf clearButton{
-    .startPoint = {.X = 10, .Y = 2},
-    .endPoint = {.X = 21, .Y = 11}
-};
-static const RectangleOf cleanButton{
-     .startPoint = {.X = 562, .Y = 3,},
-     .endPoint = {.X = 567, .Y = 6}
-};
-static const RectangleOf sizeOfRectangle{
-    .startPoint = {.X = 432, .Y = 4,},
-    .endPoint = {.X = 447, .Y = 10}
-};
-static const RectangleOf exitButton{
-     .startPoint = {.X = 627, .Y = 2},
-     .endPoint = {.X = 637, .Y = 11}
-};
-static const RectangleOf diameterOfCircle{
-    .startPoint = {.X = 393, .Y = 5,},
-    .endPoint = {.X = 405, .Y = 10}
-};
-static const RectangleOf fillBucket{
-     .startPoint = {.X = 222, .Y = 4,},
-     .endPoint = {.X = 233, .Y = 9}
-};
 
 
 //#define DISPLAY_COORDS
@@ -145,7 +83,7 @@ void fillerBucket(short x, short y)
     ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coords, &count);// танці з бубнами
     if (charInfo.Char.AsciiChar == FILLED_CELL)
     {
-        //printToCoordinates(y, x, FILLED_CELL);
+        printToCoordinates( x,y, FILLED_CELL);
         return;
     }
 
@@ -157,14 +95,14 @@ void fillerBucket(short x, short y)
     fillerBucket(x - 1, y + 1);
 
 
-    printToCoordinates(y + 1, x + 1, FILLED_CELL);
-    printToCoordinates(y - 1, x - 1, FILLED_CELL);
-    printToCoordinates(y - 1, x + 1, FILLED_CELL);
-    printToCoordinates(y + 1, x - 1, FILLED_CELL);
-    printToCoordinates(y - 1, x, FILLED_CELL);
-    printToCoordinates(y, x - 1, FILLED_CELL);
-    printToCoordinates(y, x + 1, FILLED_CELL);
-    printToCoordinates(y + 1, x, FILLED_CELL);
+    printToCoordinates( x + 1,y + 1, FILLED_CELL);
+    printToCoordinates( x - 1,y - 1, FILLED_CELL);
+    printToCoordinates( x + 1,y - 1, FILLED_CELL);
+    printToCoordinates( x - 1,y + 1, FILLED_CELL);
+    printToCoordinates( x,y - 1, FILLED_CELL);
+    printToCoordinates( x - 1,y, FILLED_CELL);
+    printToCoordinates( x + 1,y, FILLED_CELL);
+    printToCoordinates( x,y + 1, FILLED_CELL);
 }
 
 void draw(Brush brush, COORD coords,const char whatToDraw)
@@ -172,25 +110,25 @@ void draw(Brush brush, COORD coords,const char whatToDraw)
     switch (brush.getSize())
     {
     case Brush::Size::Small:
-        printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
+        printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
         break;
     case Brush::Size::Medium:
         for (int i = 0; i < 2; i++)
         {
-            printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
-            printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw);
-            printToCoordinates(coords.Y, coords.X, whatToDraw);
+            printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
+            printToCoordinates( coords.X - 1,coords.Y - 1, whatToDraw);
+            printToCoordinates( coords.X,coords.Y, whatToDraw);
             i == 1 ? coords.X -= 2 : coords.X++;
         }
         break;
     case Brush::Size::Big:
         for (int i = 0; i < 6; i++)
         {
-            printToCoordinates(coords.Y + 2, coords.X + 2, whatToDraw);
-            printToCoordinates(coords.Y + 1, coords.X + 1, whatToDraw);
-            printToCoordinates(coords.Y - 1, coords.X - 1, whatToDraw);
-            printToCoordinates(coords.Y - 2, coords.X - 2, whatToDraw);
-            printToCoordinates(coords.Y, coords.X, whatToDraw);
+            printToCoordinates( coords.X + 2,coords.Y + 2, whatToDraw);
+            printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
+            printToCoordinates( coords.X - 1,coords.Y - 1, whatToDraw);
+            printToCoordinates( coords.X - 2,coords.Y - 2, whatToDraw);
+            printToCoordinates( coords.X,coords.Y, whatToDraw);
             i == 3 ? coords.X -= 4 : coords.X++;
         }
         break;
@@ -225,20 +163,20 @@ int main()
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// color change
 
-    bool isExitPressed = false;
 
-    bool startOfRectangleSet = false;
-
-    bool startOfCircleSet = false;
 
 
     COORD startPoint{ .X = 0, .Y = 0 };
     COORD endPoint{ .X = 0,.Y = 0 };
 
+    bool startOfRectangleSet = false;
 
+    bool startOfCircleSet = false;
     
+    bool isExitPressed = false;
     while (!isExitPressed)
     {
+
         ReadConsoleInput(hin, &InputRecord, 1, &Events); // зчитування 
         
         if (isRightButtonPressed(InputRecord))
