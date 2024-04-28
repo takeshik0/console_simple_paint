@@ -1,6 +1,7 @@
 #include "Tools.h"
 #include <iostream>
 
+
 void removeScroll()
 {
     CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
@@ -26,6 +27,15 @@ void removeScroll()
     SetConsoleScreenBufferSize(hConsole, new_screen_buffer_size);
 }
 
+void makeFullScreenConsole()
+{
+    ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+}
+
+void printToCoordinates(int x, int y,const char value)
+{
+    std::cout << std::format("\033[{};{}H{}", y, x, value);
+}
 
 
 void consoleSelectionBlock(HANDLE hin)
@@ -40,3 +50,6 @@ void clear() {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     std::cout << "\x1B[2J\x1B[H";
 }
+
+
+

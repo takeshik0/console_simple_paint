@@ -1,112 +1,201 @@
-#include <Windows.h>
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Menu.h"
 #include "Tools.h"
-#include "Rectangle.h"
-#include "Circle.h"
+#include "Drawer.h"
+#include "GlobalVariables.h"
+#include "Palette.h"
 
 
-void printToCoordinates(int x, int y, const char* format, ...)
+
+//#define DISPLAY_COORDS
+
+
+
+constexpr char FILLED_CELL = '0';
+
+class Brush {
+public:
+    enum class Type {
+        None, Cleaner, Circle, Rectangle, FillBucket
+    };
+
+    enum class Size {
+        Small, Medium, Big
+    };
+
+    void setSize(Size size) { fSize = size; }
+    Size getSize() const { return fSize; }
+
+    void switchType(Type type) {
+        fType = (fType == type) ? Type::None : type;
+    }
+    Type getType() const { return fType; }
+
+private:
+    Type fType = Type::None;
+    Size fSize = Size::Small;
+};
+
+Brush brush;
+
+class Button
 {
-    va_list args;
-    va_start(args, format);
-    printf("\033[%d;%dH", x, y);
-    vprintf(format, args);
-    va_end(args);
-    fflush(stdout);
+public:
+    RectangleOf fRectangle;
+
+    bool isClicked(COORD point) const {
+        return (point.X >= fRectangle.startPoint.X && point.X <= fRectangle.endPoint.X) && (point.Y >= fRectangle.startPoint.Y && point.Y <= fRectangle.endPoint.Y);
+    }
+    void onClick(Brush::Type whatToSwich)
+    {
+        brush.switchType(whatToSwich);
+    }
+
+private:
+
+};
+
+Button cleanerButton = { cleanButton };
+Button rectangleButton = { sizeOfRectangle };
+Button circleButton = { diameterOfCircle  };
+Button fillButton = { fillBucket };
+
+
+
+bool isRightButtonPressed (INPUT_RECORD InputRecord)
+{
+    return InputRecord.Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED;
+}
+bool isLeftButtonPressed(INPUT_RECORD InputRecord)
+{
+    return InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED;
 }
 
-//bool checkCoords(int x, int y)
-//{
-//    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-//    COORD coord;
-//    coord.X = x; // X-координата
-//    coord.Y = y;  // Y-координата
-//    DWORD count;
-//    CHAR_INFO charInfo;
-//    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
-//    if (charInfo.Char.AsciiChar == '0')
-//    {
-//        printToCoordinates(y, x, "0");
-//        return true;
-//    }
-//    return false;
-//}
-
-void bucketAll(int x, int y)
-{//повинно пряцювати,якщо зрозуміти як вийти з рекурсії, але я хз як
-
-    // типу if (x,y != " ") return, я не знайшов як дізнатися значиння у консолі за координатами. знайшов але тепер воно погано працює
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord;
-    coord.X = x; // X-координата
-    coord.Y = y;  // Y-координата
+//треба переробити
+void fillerBucket(short x, short y)
+{
+    COORD coords{ .X = x, .Y = y };
     DWORD count;
     CHAR_INFO charInfo;
 
     // Отримати інформацію про символ на вказаних координатах
-    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coord, &count);// танці з бубнами
-    if (charInfo.Char.AsciiChar == '0')
+    ReadConsoleOutputCharacter(hConsole, (LPTSTR)&charInfo.Char.AsciiChar, 1, coords, &count);// танці з бубнами
+    if (charInfo.Char.AsciiChar == FILLED_CELL)
     {
-        printToCoordinates(y, x, "0");
+        printToCoordinates( x,y, FILLED_CELL);
         return;
     }
 
-    //if (checkCoords(x + 1, y + 1))return;
-    //if (checkCoords(x - 1, y - 1))return;
-    //if (checkCoords(x + 1, y - 1))return;
-    //if (checkCoords(x - 1, y + 1))return;
-    //if (checkCoords(x + 1, y + 1))return;
-    //if (checkCoords(x + 1, y + 1))return;
 
 
+    fillerBucket(x + 1, y + 1);
+    fillerBucket(x - 1, y - 1);
+    fillerBucket(x + 1, y - 1);
+    fillerBucket(x - 1, y + 1);
 
 
-    bucketAll(x + 1, y + 1);
-    bucketAll(x - 1, y - 1);
-    bucketAll(x + 1, y - 1);
-    bucketAll(x - 1, y + 1);
-    //bucketAll(x + 1, y);
-
-
-    printToCoordinates(y + 1, x + 1, "0");
-    printToCoordinates(y - 1, x - 1, "0");
-    printToCoordinates(y - 1, x + 1, "0");
-    printToCoordinates(y + 1, x - 1, "0");
-    printToCoordinates(y - 1, x, "0");
-    printToCoordinates(y, x - 1, "0");
-    printToCoordinates(y, x + 1, "0");
-    printToCoordinates(y + 1, x, "0");
-
-
-    //bucketAll(x + 1, y);
-    //bucketAll(x - 1, y);
-    //bucketAll(x, y + 1);
-    //bucketAll(x, y - 1);
-
-    //printToCoordinates(y - 1, x, "0");
-
-
-    //bucketAll(x, y - 1);
-
-
-
-
+    printToCoordinates( x + 1,y + 1, FILLED_CELL);
+    printToCoordinates( x - 1,y - 1, FILLED_CELL);
+    printToCoordinates( x + 1,y - 1, FILLED_CELL);
+    printToCoordinates( x - 1,y + 1, FILLED_CELL);
+    printToCoordinates( x,y - 1, FILLED_CELL);
+    printToCoordinates( x - 1,y, FILLED_CELL);
+    printToCoordinates( x + 1,y, FILLED_CELL);
+    printToCoordinates( x,y + 1, FILLED_CELL);
 }
 
-int main(int argc, char* argv[])
+void draw(Brush brush, COORD coords,const char whatToDraw)
 {
-    
-    ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000); //full screan console
+    switch (brush.getSize())
+    {
+    case Brush::Size::Small:
+        printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
+        break;
+    case Brush::Size::Medium:
+        for (int i = 0; i < 2; i++)
+        {
+            printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
+            printToCoordinates( coords.X - 1,coords.Y - 1, whatToDraw);
+            printToCoordinates( coords.X,coords.Y, whatToDraw);
+            i == 1 ? coords.X -= 2 : coords.X++;
+        }
+        break;
+    case Brush::Size::Big:
+        for (int i = 0; i < 6; i++)
+        {
+            printToCoordinates( coords.X + 2,coords.Y + 2, whatToDraw);
+            printToCoordinates( coords.X + 1,coords.Y + 1, whatToDraw);
+            printToCoordinates( coords.X - 1,coords.Y - 1, whatToDraw);
+            printToCoordinates( coords.X - 2,coords.Y - 2, whatToDraw);
+            printToCoordinates( coords.X,coords.Y, whatToDraw);
+            i == 3 ? coords.X -= 4 : coords.X++;
+        }
+        break;
+    default:
+        break;
+    }
+}
 
+Palette::Palette(RectangleOf borders) : fBorders(borders) {
+    for (short paletteWidth = 0, spaceBetwColors = 0; paletteWidth < fColors.size(); paletteWidth += 2, spaceBetwColors += 10)
+    {
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth]);
+        short height = 0;
+        for (; height < ELEMENT_HEIGHT; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                printToCoordinates(borders.startPoint.X + width + spaceBetwColors, borders.startPoint.Y + height, FILLED_CELL);
+            }
+        }
+        height++;//add space
+
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
+        for (; height <= ELEMENT_HEIGHT * 2; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                printToCoordinates(borders.startPoint.X + width + spaceBetwColors, borders.startPoint.Y + height, FILLED_CELL);
+            }
+        }
+    }
+    SetConsoleTextAttribute(hConsole, Color::Green);
+}
+
+std::optional<Palette::Color> Palette::selectColor(COORD point)
+{
+    for (short paletteWidth = 0, spaceBetwColors = 0; paletteWidth < fColors.size(); paletteWidth += 2, spaceBetwColors += 10)
+    {
+        short height = 0;
+        for (; height < ELEMENT_HEIGHT; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                if (point.X == paletteCoords.startPoint.X + width + spaceBetwColors && point.Y == paletteCoords.startPoint.Y + height){
+                    return fColors[paletteWidth];
+                }
+            }
+        }
+        height++;//add space
+
+        SetConsoleTextAttribute(hConsole, fColors[paletteWidth + 1]);
+        for (; height <= ELEMENT_HEIGHT * 2; height++) {
+            for (short width = 0; width < ELEMENT_WIDTH; width++) {
+                if (point.X == paletteCoords.startPoint.X + width + spaceBetwColors && point.Y == paletteCoords.startPoint.Y + height) {
+                    return fColors[paletteWidth + 1];
+                }
+            }
+        }
+    }
+    //return Palette::Color::Green;
+}
+
+int main()
+{
+    makeFullScreenConsole();
+    
     removeScroll();//видалено полосу прокрутки
     
     HANDLE hin = GetStdHandle(STD_INPUT_HANDLE); // отримуємо дескриптор
     INPUT_RECORD InputRecord; // використовується для повернення інформації про вхідні повідомлення у консольному вхідному буфері
     DWORD Events; // unsigned long
-    COORD coord; // для координат X, Y
+    COORD coords; // для координат X, Y
 
 
     /*block виділення консолі*/
@@ -119,244 +208,154 @@ int main(int argc, char* argv[])
 
     SetConsoleMode(hin, ENABLE_MOUSE_INPUT);// дозволяємо mouse input
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);// color change
 
+
+    Palette palette(paletteCoords);
+
+    COORD startPoint{ .X = 0, .Y = 0 };
+    COORD endPoint{ .X = 0,.Y = 0 };
+
+    bool startOfRectangleSet = false;
+
+    bool startOfCircleSet = false;
+    
     bool isExitPressed = false;
-
-    bool isCleanerActive = false;
-
-    bool isSmallSizePressed = true;
-
-    bool isMediumSizePressed = false;
-
-    bool isBigSizePressed = false;
-
-    bool isQuadroPressed = false;
-
-    bool isCirclePressed = false;
-
-    bool isFullBucketPressed = false;
-
-    bool popBack = true;
-
-    std::vector<std::vector<int>> coordForRectangle;
-
-
     while (!isExitPressed)
     {
+
         ReadConsoleInput(hin, &InputRecord, 1, &Events); // зчитування 
         
-        if (InputRecord.Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED) // права кнопка
+        if (isRightButtonPressed(InputRecord))
         {
-            coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
-            coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            coordForRectangle.clear();
-            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
-            {// очистити use
+            coords = InputRecord.Event.MouseEvent.dwMousePosition;
+
+            startPoint = { 0,0 };
+            endPoint = { 0,0 };
+
+            startOfRectangleSet = false;
+
+            startOfCircleSet = false;
+
+            if (clearButton.contains(coords))
+            {// очистити все
+
                 clear();
+
                 createMenu();
-                isExitPressed = false;
-
-                isCleanerActive = false;
-
-                isSmallSizePressed = true;
-
-                isMediumSizePressed = false;
-
-                isBigSizePressed = false;
-
-                isQuadroPressed = false;
-
-                isCirclePressed = false;
-
-            }
-            //isQuadroPressed = false;
-            //std:e:cout << "right - X" << coord.X << ", Y = " << coord.Y << std::endl;
-            //break; 
-        }
-        if (InputRecord.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED) // ліва кнопка
-        {
-            coord.X = InputRecord.Event.MouseEvent.dwMousePosition.X;
-            coord.Y = InputRecord.Event.MouseEvent.dwMousePosition.Y;
-            if (coord.Y > 30 && !isQuadroPressed && !isCirclePressed && !isFullBucketPressed)
-            {// заборона малювати на менюшці
-                if (!isCleanerActive)
-                {
-                    if (isSmallSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1 , coord.X + 1 ,"0");
-                    }
-                    if (isMediumSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "00");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "00");
-                        printToCoordinates(coord.Y, coord.X, "00");
-                    }
-                    if (isBigSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 2, coord.X + 2, "0000");
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "0000");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "0000");
-                        printToCoordinates(coord.Y - 2, coord.X - 2, "0000");
-                        printToCoordinates(coord.Y, coord.X, "0000");
-                    }
-                    
-                }
-                else //if (isCleanerActive)
-                {// cleaner mode
-                    if (isSmallSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, " ");
-                    }
-                    if (isMediumSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "  ");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "  ");
-                        printToCoordinates(coord.Y, coord.X, "  ");
-                    }
-                    if (isBigSizePressed)
-                    {
-                        printToCoordinates(coord.Y + 2, coord.X + 2, "    ");
-                        printToCoordinates(coord.Y + 1, coord.X + 1, "    ");
-                        printToCoordinates(coord.Y - 1, coord.X - 1, "    ");
-                        printToCoordinates(coord.Y - 2, coord.X - 2, "    ");
-                        printToCoordinates(coord.Y, coord.X, "    ");
-                    }
-                }
                 
+                brush.setSize(Brush::Size::Small);
+
+                brush.switchType(Brush::Type::None);
+
+                startOfRectangleSet = false;
+
+                startOfCircleSet = false;
+
             }
-            else if (coord.Y > 30 && isQuadroPressed && !isCirclePressed)
-            {
-                std::vector<int> temp;
-                temp.push_back(coord.X + 1);
-                temp.push_back(coord.Y + 1);
-                coordForRectangle.push_back(temp);
-            }
-            else if (coord.Y > 30 && !isQuadroPressed && isCirclePressed)
-            {
-                std::vector<int> temp;
-                temp.push_back(coord.X + 1);
-                temp.push_back(coord.Y + 1);
-                coordForRectangle.push_back(temp);
-            }
-            if (coord.Y <= 5 && coord.Y >= 4 && coord.X >= 512 && coord.X <= 514)
-            {// зміна на маленький розміру курсора
-                isSmallSizePressed = true;
-                isMediumSizePressed = false;
-                isBigSizePressed = false;
-            }
-            if (coord.Y <= 10 && coord.Y >= 8 && coord.X >= 511 && coord.X <= 515)
-            {// зміна на середній розміру курсора
-                isSmallSizePressed = false;
-                isMediumSizePressed = true;
-                isBigSizePressed = false;
-            }
-            if (coord.Y <= 16 && coord.Y >= 13 && coord.X >= 510 && coord.X <= 516)
-            {// зміна на великий розміру курсора
-                isSmallSizePressed = false;
-                isMediumSizePressed = false;
-                isBigSizePressed = true;
-            }
-            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 607 && coord.X <= 617)
+        }
+        if (isLeftButtonPressed(InputRecord))
+        {
+            coords = InputRecord.Event.MouseEvent.dwMousePosition;
+
+            if (exitButton.contains(coords))
             {// вихід
                 isExitPressed = true;
             }
-            if (coord.Y <= 11 && coord.Y >= 2 && coord.X >= 10 && coord.X <= 21)
+
+            if (clearButton.contains(coords))
             {// очистити
                 clear();
                 createMenu();
             }
-            if (coord.Y <= 10 && coord.Y >= 4 && coord.X >= 402 && coord.X <= 417)
-            {// малювати квадратом
-                if (isQuadroPressed)
-                {
-                    isQuadroPressed = false;
-                }
-                else
-                {
-                    isQuadroPressed = true;
-                }
-            }
-            if (coord.Y <= 10 && coord.Y >= 5 && coord.X >= 373 && coord.X <= 385)
-            {// малювати коло
-                if (isCirclePressed)
-                {
-                    isCirclePressed = false;
-                }
-                else
-                {
-                    isCirclePressed = true;
-                }
-            }
-            if (coord.Y <= 9 && coord.Y >= 4 && coord.X >= 202 && coord.X <= 213)
-            {// заливка
-                if (isFullBucketPressed)
-                {
-                    isFullBucketPressed = false;
-                }
-                else
-                {
-                    isFullBucketPressed = true;
-                }
-            }
-            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 572 && coord.X <= 577)
-            {// синій колір
-                SetConsoleTextAttribute(hConsole, 9);
-            }
-            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 562 && coord.X <= 567)
-            {// зелений колір
-                SetConsoleTextAttribute(hConsole, 10);
-            }
-            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 552 && coord.X <= 557)
-            {// червоний колір
-                SetConsoleTextAttribute(hConsole, 12);
-            }
-            if (coord.Y <= 11 && coord.Y >= 8 && coord.X >= 552 && coord.X <= 557)
-            {// білий колір
-                SetConsoleTextAttribute(hConsole, 15);
-            }
-            if (coord.Y <= 11 && coord.Y >= 8 && coord.X >= 562 && coord.X <= 567)
-            {// жовтий колір
-                SetConsoleTextAttribute(hConsole, 14);
-            }
-            if(coord.Y <= 11 && coord.Y >= 8 && coord.X >= 572 && coord.X <= 577)
-            {// pink колір
-                SetConsoleTextAttribute(hConsole, 13);
-            }
-            if (coord.Y <= 6 && coord.Y >= 3 && coord.X >= 542 && coord.X <= 547)
-            {// червоний колір
-                if (isCleanerActive)
-                {
-                    isCleanerActive = false;
-                }
-                else 
-                {
-                    isCleanerActive = true;
-                }
 
+            if (const bool isCanvasPressed = coords.Y > 30; isCanvasPressed)
+            {
+                switch (brush.getType())
+                {
+                case Brush::Type::None:
+                    draw(brush, coords, '0');
+                    break;
+                case Brush::Type::Cleaner: {
+                    draw(brush, coords, ' ');
+                }break;
+                case Brush::Type::Circle: {
+                    RectangleOf Circle;
+                    if (!startOfCircleSet) {
+                        Circle.startPoint = coords;
+                        startOfCircleSet = true;
+                    }
+                    Circle.endPoint = coords;
+                    drawCircle(Circle);
+                }break;
+                case Brush::Type::Rectangle:
+                    RectangleOf Rectangle;
+                    if (!startOfRectangleSet) {
+                        Rectangle.startPoint = coords;
+                        startOfRectangleSet = true;
+                    }
+                    Rectangle.endPoint = coords;
+                    drawRectangle(Rectangle);
+                    break;
+                case Brush::Type::FillBucket:
+                    fillerBucket(coords.X, coords.Y - 1);
+                    break;
+                default: 
+                    break;
+                }
+            }
+            if (smallSizePen.contains(coords))
+            {// зміна на маленький розміру курсора
+                brush.setSize(Brush::Size::Small);
             }
 
-            //std::cout << "left - X" << coord.X << ", Y = " << coord.Y << std::endl;
-        }
-        if (isQuadroPressed && !isCirclePressed)
-        {
-            drawRectangle(coordForRectangle);
-        }
-        if (isCirclePressed)
-        {
-            drawCircle(coordForRectangle);
-        }
-        if (isFullBucketPressed && coord.Y >30)
-        {
+            if (middleSizePen.contains(coords))
+            {// зміна на середній розміру курсора
+                brush.setSize(Brush::Size::Medium);
+            }
+
+            if (bigSizePen.contains(coords))
+            {// зміна на великий розміру курсора
+                brush.setSize(Brush::Size::Big);
+            }
+
             
-            bucketAll(coord.X,coord.Y - 1);
+            if (cleanerButton.isClicked(coords))
+            {// cleaner
+                cleanerButton.onClick(Brush::Type::Cleaner);
+            }
+
+            if (rectangleButton.isClicked(coords))
+            {
+                rectangleButton.onClick(Brush::Type::Rectangle);
+            }
+
+            if (circleButton.isClicked(coords))
+            {
+                circleButton.onClick(Brush::Type::Circle);
+            }
+
+            if (fillButton.isClicked(coords))
+            {// заливка
+                fillButton.onClick(Brush::Type::FillBucket);
+            }
+            
+            if (coords.Y < 30) {
+                if (std::optional color = palette.selectColor(coords)) {
+                    SetConsoleTextAttribute(hConsole, static_cast<int>(color.value()));
+                }
+            }
+
+#ifdef DISPLAY_COORDS
+            std::cout << "left - X" << coords.X << ", Y = " << coords.Y << std::endl;
+#endif // DISPLAY_COORDS
+ 
         }
     }
 
 
 
 
-    //system("pause");
     return 0;
 
 }
+

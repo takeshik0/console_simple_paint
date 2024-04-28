@@ -1,6 +1,19 @@
 # Prerequisites
 *.d
 
+# Build folder
+*x64/Debug
+*x64
+*x32
+*Debug
+
+# User Settings
+*simple_paint.vsxproj.
+*simple_paint.vsxproj.
+*.vsxproj
+*.vsxproj.
+*.vs
+
 # Compiled Object files
 *.slo
 *.lo
